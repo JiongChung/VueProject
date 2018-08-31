@@ -14,7 +14,7 @@
                             action="https://jsonplaceholder.typicode.com/posts/"
                             :on-preview="handlePreview"
                             multiple>
-                            <el-button size="small" type="primary">点击上传</el-button>
+                            <el-button size="big" type="primary">点击上传</el-button>
                             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                         </el-upload>
                     </div>
@@ -26,7 +26,7 @@
                                 <span class="name">
                                     用户名<b>用户名只能修改一次,请慎重修改</b>
                                 </span>
-                                <input type="text" class="inputchang" name="username" v-model="username" placeholder="请输入用户名">
+                                <input type="text" v-model="form.userName" class="inputchang" :disabled="form.userNameModificationCount > 0" name="username" placeholder="请输入用户名">
                             </li>
                             <li>
                                 <span class="name">
@@ -58,18 +58,15 @@
                                 <span class="name">
                                     手机号码
                                 </span>
-                                <input type="text" class="inputchang" name="phoneNumber" v-model="phoneNumber" placeholder="请输入手机号码">
+                                <input type="text" class="inputchang" name="phoneNumber" v-model="form.phoneNumber" placeholder="请输入手机号码">
                                 <div class="ordercheckbox">
-                                    <el-checkbox-group v-model="form.type">
-                                    <el-checkbox label="接收订单短信通知" name="type"></el-checkbox>
-                                    <el-checkbox label="接收订单邮件通知" name="type"></el-checkbox>
-                                </el-checkbox-group>
+                                    <el-checkbox label="接收订单短信通知" name="type" v-model="form.isOrderPhoneNotice"></el-checkbox>
+                                    <el-checkbox label="接收订单邮件通知" v-model="form.isOrderEmailNotice" name="type"></el-checkbox>
                                 </div>
                             </li>
                         </ul>
                         <el-form-item class="el-form-item-center">
-                            <el-button type="primary" @click="onSubmit">立即创建</el-button>
-                            <el-button>取消</el-button>
+                            <el-button type="primary" @click="onSubmit" style="width:150px">保存</el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -106,8 +103,6 @@
         data(){
             return{
                 activeName: 'first',
-                username: '',
-                phoneNumber: '',
                 countryoptions: [
                     {
                         value: '1',
@@ -131,7 +126,14 @@
                     }
                 ],
                 form: {
-                    type: [],
+                    userName: '',
+                    emailAddress: '',
+                    isEmailConfirmed: false,
+                    isOrderEmailNotice: false,
+                    isOrderPhoneNotice: false,
+                    isPhoneNumberConfirmed: false,
+                    phoneNumber: '',
+                    userNameModificationCount: 0
                 },
                 passwordform: {
                     currentPassword: '',
@@ -140,15 +142,36 @@
                 }
             }
         },
+        mounted: function(){
+           this.GetUserProfileForEdit(this.apiService + 'Account/GetUserProfileForEdit');
+        },
         methods: {
             handlePreview(file) {
                 console.log(file);
             },
             onSubmit() {
-                console.log('submit!');
+                let status = false;
+                if(!this.commonService.zValidate.phone(this.form.phoneNumber)){
+                    status = true;
+                    this.$message.error('手机格式错误，请重新输入');
+                }
+                if(status){
+                    return false;
+                }
+                let url = this.apiService + 'Account/UpdateUserProfile';
+                this.$http.post(url,this.form).then(response => {
+                    console.log(response)
+                });
             },
             savePassword: function(){
                 console.log('submit!');
+            },
+
+            GetUserProfileForEdit(url){
+                this.$http.get(url).then(response => {
+                    this.form = response.body.result;
+                    console.log(this.form)
+                });
             }
         }
     })

@@ -101,7 +101,7 @@
                         valuation: '963287812 CNY'
                     }
                 ],
-                loading: false
+                loading: true
             }
         },
         methods: {
@@ -126,7 +126,6 @@
             hidezero: { 
                 handler(curVal,oldVal){
                     console.log(curVal);
-                    // this.loading = true;
                 },
                 deep: true, 
             },

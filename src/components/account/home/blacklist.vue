@@ -14,7 +14,7 @@
                         <li>评价数</li>
                         <li>操作</li>
                     </ol>
-                    <ul>
+                    <ul v-for="item in lists">
                         <li>
                             <span class="img"><img src="../../../assets/images/6.png" alt=""></span>
                             UserName
@@ -40,12 +40,21 @@
         data(){
             return{
                 activeName: 'first',
-                lists: [
-                    {name: 'a'}
-                ]
+                lists: []
             }
         },
+        mounted: function(){
+           this.GetBlackList(this.apiService + 'BlackList/GetBlackList');
+        },
         methods: {
+            GetBlackList(url){
+                this.$http.get(url).then(response => {
+                    this.lists = response.body.result.items;
+                },err => {
+                    console.log(err)
+                });
+            },
+
             removeBlackList(id) {
                 console.log(id)
                 this.$confirm('确定要将此用户移出黑名单?', '', {

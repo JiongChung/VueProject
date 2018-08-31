@@ -66,7 +66,7 @@
 </script>
 <style lang="less" scoped>
     .qaforotc{
-        padding: 30px 4%;
+        padding: 30px 0;
         display: flex;
 
         .item{

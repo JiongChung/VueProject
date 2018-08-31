@@ -7,10 +7,10 @@
             <div class="header-nav">
                 <div class="login-item">
                     <ul>
-                        <li class="needlogin"><router-link to="/login">登录</router-link></li>
-                        <li class="needlogin"><router-link to="/register">注册</router-link></li>
-                        <li><router-link to="/invitefriends">邀请好友</router-link></li>
-                        <li>
+                        <li class="needlogin" v-if="!isLoginNow"><router-link to="/login">登录</router-link></li>
+                        <li class="needlogin" v-if="!isLoginNow"><router-link to="/register">注册</router-link></li>
+                        <li v-if="isLoginNow"><router-link to="/invitefriends">邀请好友</router-link></li>
+                        <li v-if="isLoginNow">
                             <el-dropdown @command="assetsCommand">
                                 <span class="el-dropdown-link">
                                     资产管理<i class="el-icon-arrow-down el-icon--right"></i>
@@ -39,7 +39,7 @@
                 </div>
                 <ul>
                     <li><router-link to="/">首页</router-link></li>
-                    <li><router-link to="/adstrade">场外交易</router-link></li>
+                    <li id="adstradenav"><router-link to="/adstrade">场外交易</router-link></li>
                     <li><router-link to="/help">帮助中心</router-link></li>
                     <li><router-link to="/download">下载APP</router-link></li>
                 </ul>
@@ -50,17 +50,32 @@
 <script>
     export default {
         name: 'Header',
+        inject: ['reload'],
         data () {
             return {
                 msg: 'header',
-                
+                isLoginNow: false
             }
+        },
+        
+        mounted(){
+            this.isLoginNow = this.commonService.islogin();
+            console.log(0)
         },
 
          methods: {
             assetsCommand(command) {
                 if(command == 'a'){
                     this.$router.push('/account');
+                }
+                if(command == 'e'){
+                    this.commonService.TokenCommonSet.delCookie('Abp.AuthToken');
+                    this.commonService.TokenCommonSet.delCookie('enc_auth_token');
+                    this.commonService.TokenCommonSet.delCookie('__accessToken');
+                    this.commonService.TokenCommonSet.delCookie('__userId');
+                    window.localStorage.removeItem('__accessToken');
+                    this.$router.push('/');
+                    this.reload();
                 }
             },
             languageCommand(command){
@@ -71,12 +86,10 @@
 </script>
 <style lang="less" scoped>
     #header-item{
-        background: url(../../assets/images/nav_bg.jpg) no-repeat center top;
-        height: 92px;
-        min-width: 1400px;
+        
         
         .header{
-            max-width: 1400px;
+            
             margin:0 auto;
             padding: 19px 0;
         
@@ -93,6 +106,7 @@
                 .login-item{
                     float: right;
                     padding-left: 100px;
+                    margin-top: -8px;
                     
                     li{
                         padding: 0 10px;
@@ -138,6 +152,13 @@
                     }
                 }
             }
+        }
+
+        #adstradenav.active a{
+            background: #017eff;
+            padding: 5px 20px;
+            border-radius: 20px;
+            color: #ffffff;
         }
     }
 </style>

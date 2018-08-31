@@ -95,7 +95,7 @@
         }
 
         .otcvclist{
-            padding: 30px 5%;
+            padding: 30px 0;
             display: flex;
 
             ul{

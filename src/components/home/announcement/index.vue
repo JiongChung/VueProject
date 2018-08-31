@@ -27,7 +27,7 @@
 </script>
 <style lang="less" scoped>
     .announcement{
-        padding: 50px 5%;
+        padding: 50px 0;
 
         .announcement-item{
             background: rgba(255,255,255,0.1);

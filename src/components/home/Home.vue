@@ -1,16 +1,20 @@
 <template>
     <div class="home">
+        <app-header></app-header>
         <app-banner></app-banner>
-        <app-announcement></app-announcement>
-        <app-tradetool></app-tradetool>
-        <app-digitalassets></app-digitalassets>
-        <app-outsidetrade></app-outsidetrade>
-        <app-otcvc></app-otcvc>
-        <app-qaforotc></app-qaforotc>
+        <div class="wrap-item">
+            <app-announcement></app-announcement>
+            <app-tradetool></app-tradetool>
+            <app-digitalassets></app-digitalassets>
+            <app-outsidetrade></app-outsidetrade>
+            <app-otcvc></app-otcvc>
+            <app-qaforotc></app-qaforotc>
+        </div>
     </div>
 </template>
 <script type="ts">
     import Vue from 'vue'
+    import Header from '../header/Header'
     import Banner from './swiper/index'
     import Announcement from './announcement/index'
     import TradeTool from './tradetool/index'
@@ -22,6 +26,7 @@
     export default Vue.extend({
         name: 'Home',
         components: {
+            'app-header' : Header,
             'app-banner': Banner,
             'app-announcement': Announcement,
             'app-tradetool': TradeTool,

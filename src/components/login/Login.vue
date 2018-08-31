@@ -1,56 +1,64 @@
 <template>
-    <div class="login">
-        <div class="login-item">
-            <div class="info">
-                <ul>
-                    <li>
-                        <h4>自由交易虚拟货币</h4>
-                        <span>强大的广告系统，让交易数字币安全又快速</span>
-                    </li>
-                    <li>
-                        <h4>场外交易可以很简单</h4>
-                        <span>不论是购买、出售数字币，都可立即上手</span>
-                    </li>
-                    <li>
-                        <h4>最全面的交易种类</h4>
-                        <span>支持 BTC / ETH 等主流货币，及多种交易方式</span>
-                    </li>
-                </ul>
-            </div>
-            <div class="login-box">
-                <h4>登录</h4>
-                <form 
-                    @submit="checkForm"
-                    action="#"
-                    method="post"
-                    novalidate="true">
+    <div>
+        <app-header></app-header>
+        <div class="login">
+            <div class="login-item">
+                <div class="info">
                     <ul>
-                        <li class="inputbox">
-                            <input class="validate" v-on:input="watchphoneNumber" v-model="userNameOrEmailAddressOrPhoneNumber" autocomplete="off" rule="phone" type="text" msg="请输入正确的手机号码" name="userNameOrEmailAddressOrPhoneNumber" placeholder="请输入您的手机号">
-                            <span class="err-tips" v-if="phoneNumberStatus">请输入正确的手机号码</span>
+                        <li>
+                            <h4>自由交易虚拟货币</h4>
+                            <span>强大的广告系统，让交易数字币安全又快速</span>
                         </li>
-                        <li class="inputbox">
-                            <input id="pwd" v-on:input="watchPassword" autocomplete="off" v-model="password" name="password" rule="password" type="password" class="validate" maxlength="20" msg="请输入8位至20位英文数字组合密码" placeholder="请输入您的密码">
-                            <span class="err-tips" v-if="passwordStatus">请输入8位至20位英文数字组合密码</span>
-                            <span class="err-tips" v-if="passwordStatusErr">登录密码错误</span>
+                        <li>
+                            <h4>场外交易可以很简单</h4>
+                            <span>不论是购买、出售数字币，都可立即上手</span>
                         </li>
-                        <li class="submit">
-                            <input type="submit" id="loginsubmitbtn" value="登录">
-                        </li>
-                        <li class="forgot">
-                            <a href="javascript:;">忘记密码？</a>
-                            <span class="register">还没有账号？<router-link to="/register">注册</router-link></span>
+                        <li>
+                            <h4>最全面的交易种类</h4>
+                            <span>支持 BTC / ETH 等主流货币，及多种交易方式</span>
                         </li>
                     </ul>
-                </form>
+                </div>
+                <div class="login-box">
+                    <h4>登录</h4>
+                    <form 
+                        @submit="checkForm"
+                        action="#"
+                        method="post"
+                        novalidate="true">
+                        <ul>
+                            <li class="inputbox">
+                                <input class="validate" v-on:input="watchphoneNumber" v-model="userNameOrEmailAddressOrPhoneNumber"  rule="phone" type="text" msg="请输入正确的手机号码" name="userNameOrEmailAddressOrPhoneNumber" placeholder="请输入您的手机号">
+                                <span class="err-tips" v-if="phoneNumberStatus">请输入正确的手机号码</span>
+                            </li>
+                            <li class="inputbox">
+                                <input id="pwd" v-on:input="watchPassword" v-model="password" name="password" rule="password" type="password" class="validate" maxlength="20" msg="请输入8位至20位英文数字组合密码" placeholder="请输入您的密码">
+                                <span class="err-tips" v-if="passwordStatus">请输入8位至20位英文数字组合密码</span>
+                                <span class="err-tips" v-if="passwordStatusErr">登录密码错误</span>
+                            </li>
+                            <li class="submit">
+                                <input type="submit" id="loginsubmitbtn" value="登录">
+                            </li>
+                            <li class="forgot">
+                                <a href="javascript:;">忘记密码？</a>
+                                <span class="register">还没有账号？<router-link to="/register">注册</router-link></span>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script type="ts">
     import Vue from 'vue'
+    import Header from '../header/Header'
     export default Vue.extend({
         name: "Login",
+        components: {
+            'app-header' : Header
+        },
+        inject: ['reload'],
         data(){
             return{
                 userNameOrEmailAddressOrPhoneNumber: '',
@@ -67,6 +75,10 @@
         },
         mounted: function(){
             // this.commonService.routepath(this.$route.path)
+            if(this.commonService.islogin()){
+                this.$router.push('/account');
+                this.reload();
+            }
         },
         methods:{
             checkForm: function(e){
@@ -103,11 +115,13 @@
                     let data = res.body.result;
                     that.commonService.TokenCommonSet.setCookie('__accessToken',data.accessToken);
                     that.commonService.TokenCommonSet.setCookie('__userId',data.userId);
-                    if(fullPath.indexOf('register') > -1 || fullPath.indexOf('login')){
-                        this.$router.push('/');
-                    }else{
-                        this.$router.push(fullPath);
-                    }
+                    window.localStorage.setItem('__accessToken',data.accessToken);
+                    this.$router.push(fullPath);
+                    // if(fullPath.indexOf('register') > -1 || fullPath.indexOf('login')){
+                    //     this.$router.push('/');
+                    // }else{
+                    //     this.$router.push(fullPath);
+                    // }
                 },function(err){
                     that.loginStatus = false;
                     loginsubmitbtn.classList.remove('loading');

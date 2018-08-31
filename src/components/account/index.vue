@@ -1,82 +1,133 @@
 <template>
-    <div class="account">
-        <div class="account-item clearfix">
-            <div class="account-left">
-                <div class="userinfo">
-                    <div class="profile">
-                        <span class="img">
-                            <img src="../../assets/images/pic.jpg" alt="">
-                        </span>
-                        <span class="username">
-                            Null
-                        </span>
-                        <span class="emailorphone">
-                            420049229@qq.com
-                        </span>
-                        <span class="lastlogintime">
-                            上次登录时间：2018-08-22 14:16:24
-                        </span>
+    <div>
+        <app-header></app-header>
+        <div class="account">
+            <div class="account-item clearfix">
+                <div class="account-left">
+                    <div class="userinfo">
+                        <div class="profile">
+                            <span class="img">
+                                <img :src="profilePicture" alt="">
+                            </span>
+                            <span class="username">
+                                {{userForAccount.userName}}
+                            </span>
+                            <span class="emailorphone">
+                                {{userForAccount.phoneNumber}}
+                            </span>
+                            <span class="lastlogintime">
+                                上次登录时间：{{userForAccount.lastLoginTime | DateFormat}}
+                            </span>
+                        </div>
+                        <div class="profiletool">
+                            <ul>
+                                <li>
+                                    <span class="title">
+                                        安全等级：
+                                    </span>
+                                    <span class="progress"><i :style="{ width: securityLevelRate + '%' }"></i></span>
+                                    <span v-if="userForAccount.securityLevel < 2 && userStatus">差</span>
+                                    <span v-if="1 < userForAccount.securityLevel < 5 && userStatus">中</span>
+                                    <span v-if="userForAccount.securityLevel > 4 && userStatus">高</span>
+                                </li>
+                                <li>
+                                    <span class="title">
+                                        评价数：
+                                    </span>
+                                    <b class="praise">+{{userForAccount.praiseCount}}</b> / -{{userForAccount.negativeCount}}
+                                </li>
+                                <li>
+                                    <span class="title">
+                                        资产估值：
+                                    </span>
+                                    <b class="praise" style="display:none">0.001452101BTC/ </b>
+                                    {{userForAccount.asset}}CNY
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="profiletool">
-                        <ul>
-                            <li>
-                                <span class="title">
-                                    安全等级：
-                                </span>
-                                <span class="progress"><i style="width:50%"></i></span>
-                                差
-                            </li>
-                            <li>
-                                <span class="title">
-                                    评价数：
-                                </span>
-                                <b class="praise">+0</b> / -0
-                            </li>
-                            <li>
-                                <span class="title">
-                                    资产估值：
-                                </span>
-                                <b class="praise">0.001452101BTC</b>
-                                 / 15.23CNY
-                            </li>
-                        </ul>
+                    <div class="account-nav">
+                        <dl>
+                            <dt>用户中心</dt>
+                            <dd><router-link to="/account">我的帐号</router-link></dd>
+                            <dd><router-link to="/base">基本资料</router-link></dd>
+                            <dd><router-link to="/realnameverified">实名认证</router-link></dd>
+                            <dd><router-link to="/safesettings">安全设置</router-link></dd>
+                        </dl>
+                        <dl>
+                            <dt>资产中心</dt>
+                            <dd><router-link to="/mywallet">我的钱包</router-link></dd>
+                            <dd><router-link to="/takecoin">充值提币记录</router-link></dd>
+                        </dl>
                     </div>
                 </div>
-                <div class="account-nav">
-                    <dl>
-                        <dt>用户中心</dt>
-                        <dd><router-link to="/account">我的帐号</router-link></dd>
-                        <dd><router-link to="/base">基本资料</router-link></dd>
-                        <dd><router-link to="/realnameverified">实名认证</router-link></dd>
-                        <dd><router-link to="/safesettings">安全设置</router-link></dd>
-                    </dl>
-                    <dl>
-                        <dt>资产中心</dt>
-                        <dd><router-link to="/mywallet">我的钱包</router-link></dd>
-                        <dd><router-link to="/takecoin">充值提币记录</router-link></dd>
-                    </dl>
+                <div class="account-right">
+                    <router-view></router-view>
                 </div>
-            </div>
-            <div class="account-right">
-                <router-view></router-view>
             </div>
         </div>
     </div>
 </template>
 <script type="ts">
     import Vue from 'vue'
+    import Header from '../header/Header'
+    import commonServiceStore from '../../store/index';
     export default Vue.extend({
+        components: {
+            'app-header' : Header,
+        },
+        
         data(){
             return{
-                msg: 'asd'
+                userStatus : false,
+                securityLevelRate: 0,
+                userForAccount: {
+                    lastLoginTime: '',
+                    asset: 0,
+                    negativeCount: 0,
+                    phoneNumber: '',
+                    praiseCount: 0,
+                    securityLevel: 0,
+                    userName: ''
+                },
+                profilePicture: ''
             }
         },
         mounted: function(){
-           this.GetUserForAccount();
+           this.GetUserForAccount(this.apiService + 'Account/GetUserForAccount');
+           this.GetProfilePicture(this.apiService + 'Profile/GetProfilePicture');
+           if(!this.commonService.islogin()){
+               this.$router.push('/');
+           }
         },
         methods:{
-            GetUserForAccount: function(){
-                console.log(0)
+            GetUserForAccount(url){
+                this.$http.get(url).then(response => {
+                    this.userForAccount = response.data.result.userForAccount;
+                    this.userStatus = true;
+                    this.securityLevelRate = this.userForAccount.securityLevel / 5 * 100;
+                },err => {
+                    console.log(err)
+                });
+            },
+
+            GetProfilePicture(url){
+                this.$http.get(url).then(response => {
+                    this.profilePicture = 'data:image/jpeg;base64,' + response.data.result.profilePicture;
+                },err => {
+                    console.log(err)
+                });
+            },
+
+            padDate(va){
+                va=va<10?'0'+va:va;
+                return va
+            }
+        },
+
+        filters: {
+            DateFormat(val){
+                return commonServiceStore.formatDate(val);
             }
         }
     })

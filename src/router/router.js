@@ -17,6 +17,15 @@ import BlackList from '../components/account/home/blacklist'
 import SafeSettings from '../components/account/safesettings/index'
 import MyWallet from '../components/account/mywallet/index'
 import TakeCoin from '../components/account/takecoin/index'
+import SellTrade from '../components/adstrade/selltrade'
+import Publish from '../components/adstrade/publish'
+import MyOrder from '../components/adstrade/myorder'
+import AdsBuy from '../components/adstrade/adsbuy'
+import UserInfo from '../components/adstrade/userinfo'
+import Offers from '../components/adstrade/offers'
+import CreateOrEdit from '../components/account/TakeCoin/createoredit'
+import TakeCoinApply from '../components/adstrade/takecoinapply'
+import TakeCoinList from '../components/adstrade/takecoinlist'
 
 Vue.use(Router)
 
@@ -25,7 +34,19 @@ export default new Router({
     mode: 'history',
     routes: [
         { path: '/',component: Home },
-        { path: '/adstrade', name: 'AdsTrade', component: AdsTrade },
+        { path: '',  component: AdsTrade,
+            children: [
+                { path: '/adstrade', name: 'AdsBuy', component: AdsBuy},
+                { path: '/adstrade', name: 'AdsTrade', component: AdsTrade },
+                { path: '/selltrade', name: 'SellTrade', component: SellTrade },
+                { path: '/publish', name: 'Publish', component: Publish },
+                { path: '/myorder', name: 'MyOrder', component: MyOrder },
+                { path: '/userinfo/:id', name: 'UserInfo', component: UserInfo },
+                { path: '/offers/:id', name: 'Offers', component: Offers },
+                { path: '/takecoinapply', name: 'TakeCoinApply', component: TakeCoinApply },
+                { path: '/takecoinlist', name: 'TakeCoinList', component: TakeCoinList }
+            ]
+        },
         { path: '/help', name: 'Help', component: Help },
         { path: '/download', name: 'DownloadApp', component: DownloadApp },
         { path: '/login', name: 'Login', component: Login },
@@ -40,7 +61,8 @@ export default new Router({
                 { path: '/blacklist', name: 'BlackList', component: BlackList },
                 { path: '/safesettings', name: 'SafeSettings', component: SafeSettings },
                 { path: '/mywallet', name: 'MyWallet', component: MyWallet },
-                { path: '/takecoin', name: 'TakeCoin', component: TakeCoin }
+                { path: '/takecoin', name: 'TakeCoin', component: TakeCoin },
+                { path: '/createoredit', name: 'CreateOrEdit', component: CreateOrEdit }
             ]
         },
         { path: "*", redirect: "/" }

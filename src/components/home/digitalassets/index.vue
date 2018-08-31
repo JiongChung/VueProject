@@ -211,7 +211,7 @@
         }
 
         .assetslist{
-            padding: 30px 1%;
+            padding: 30px 0;
             display: flex;
 
             ul{

@@ -49,4 +49,7 @@
         width: 100%;
         height: 700px;
     }
+    .swiper-slide{
+        width: 100% !important
+    }
 </style>

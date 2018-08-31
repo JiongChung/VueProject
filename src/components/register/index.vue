@@ -1,68 +1,76 @@
 <template>
-    <div class="login">
-        <div class="login-item">
-            <div class="info">
-                <ul>
-                    <li>
-                        <h4>自由交易虚拟货币</h4>
-                        <span>强大的广告系统，让交易数字币安全又快速</span>
-                    </li>
-                    <li>
-                        <h4>场外交易可以很简单</h4>
-                        <span>不论是购买、出售数字币，都可立即上手</span>
-                    </li>
-                    <li>
-                        <h4>最全面的交易种类</h4>
-                        <span>支持 BTC / ETH 等主流货币，及多种交易方式</span>
-                    </li>
-                </ul>
-            </div>
-            <div class="login-box">
-                <h4>注册</h4>
-                <form 
-                    @submit="checkForm"
-                    action="#"
-                    method="post"
-                    novalidate="true">
+    <div>
+        <app-header></app-header>
+        <div class="login">
+            <div class="login-item">
+                <div class="info">
                     <ul>
-                        <li class="inputbox country">
-                            <div class="countryphonecode">
-                                (+86) China
-                            </div>
-                            <input class="validate" v-on:input="watchphoneNumber" v-model="phoneNumber" autocomplete="off" rule="phone" type="text" msg="请输入正确的手机号码" name="phoneNumber" placeholder="请输入您的手机号">
-                            <span class="err-tips" v-if="phoneNumberStatus">请输入正确的手机号码</span>
+                        <li>
+                            <h4>自由交易虚拟货币</h4>
+                            <span>强大的广告系统，让交易数字币安全又快速</span>
                         </li>
-                        <li class="inputbox">
-                            <input id="phonecode" v-on:input="watchPhonecode" v-model="phonecode" name="phonecode" rule="phonecode" type="text" class="validate" maxlength="20" msg="请输入有效手机验证码" placeholder="请输入手机验证码">
-                            <span class="getcode" v-on:click="getPhoneCode">获取验证码</span>
-                            <span class="err-tips" v-if="phonecodeStatus">请输入有效手机验证码</span>
+                        <li>
+                            <h4>场外交易可以很简单</h4>
+                            <span>不论是购买、出售数字币，都可立即上手</span>
                         </li>
-                        <li class="inputbox">
-                            <input id="pwd" name="password" v-on:input="watchPassword" v-model="password" rule="password" type="password" class="validate" maxlength="20" msg="请输入8位至20位英文数字组合密码" placeholder="请输入您的密码">
-                            <span class="err-tips" v-if="passwordStatus">请输入8位至20位英文数字组合密码</span>
-                        </li>
-                        <li class="inputbox">
-                            <input id="confirm_password" v-on:input="watchConfirmpassword" v-model="confirm_password" name="confirm_password" rule="password" type="password" class="validate" maxlength="20" msg="请输入8位至20位英文数字组合密码" placeholder="请再次输入密码">
-                            <span class="err-tips" v-if="confirmStatus">请输入8位至20位英文数字组合密码</span>
-                            <span class="err-tips" v-if="confirmTwiceStatus">两次密码输入不正确</span>
-                        </li>
-                        <li class="submit">
-                            <input type="submit" value="注册">
-                        </li>
-                        <li class="terms">
-                            <a href="javascript:;" class="text">注册即表示同意OTV  VC使用条款</a>
-                            <span class="register">已经有账号？<router-link to="/login">登录</router-link></span>
+                        <li>
+                            <h4>最全面的交易种类</h4>
+                            <span>支持 BTC / ETH 等主流货币，及多种交易方式</span>
                         </li>
                     </ul>
-                </form>
+                </div>
+                <div class="login-box">
+                    <h4>注册</h4>
+                    <form 
+                        @submit="checkForm"
+                        action="#"
+                        method="post"
+                        novalidate="true">
+                        <ul>
+                            <li class="inputbox country">
+                                <div class="countryphonecode">
+                                    (+86) China
+                                </div>
+                                <input class="validate" v-on:input="watchphoneNumber" v-model="phoneNumber" autocomplete="off" rule="phone" type="text" msg="请输入正确的手机号码" name="phoneNumber" placeholder="请输入您的手机号">
+                                <span class="err-tips" v-if="phoneNumberStatus">请输入正确的手机号码</span>
+                            </li>
+                            <li class="inputbox">
+                                <input id="phonecode" v-on:input="watchPhonecode" v-model="phonecode" name="phonecode" rule="phonecode" type="text" class="validate" maxlength="20" msg="请输入有效手机验证码" placeholder="请输入手机验证码">
+                                <span class="getcode" v-on:click="getPhoneCode">获取验证码</span>
+                                <span class="err-tips" v-if="phonecodeStatus">请输入有效手机验证码</span>
+                            </li>
+                            <li class="inputbox">
+                                <input id="pwd" name="password" v-on:input="watchPassword" v-model="password" rule="password" type="password" class="validate" maxlength="20" msg="请输入8位至20位英文数字组合密码" placeholder="请输入您的密码">
+                                <span class="err-tips" v-if="passwordStatus">请输入8位至20位英文数字组合密码</span>
+                            </li>
+                            <li class="inputbox">
+                                <input id="confirm_password" v-on:input="watchConfirmpassword" v-model="confirm_password" name="confirm_password" rule="password" type="password" class="validate" maxlength="20" msg="请输入8位至20位英文数字组合密码" placeholder="请再次输入密码">
+                                <span class="err-tips" v-if="confirmStatus">请输入8位至20位英文数字组合密码</span>
+                                <span class="err-tips" v-if="confirmTwiceStatus">两次密码输入不正确</span>
+                            </li>
+                            <li class="submit">
+                                <input type="submit" value="注册">
+                            </li>
+                            <li class="terms">
+                                <a href="javascript:;" class="text">注册即表示同意OTV  VC使用条款</a>
+                                <span class="register">已经有账号？<router-link to="/login">登录</router-link></span>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script type="ts">
     import Vue from 'vue'
+    import Header from '../header/Header'
     export default Vue.extend({
         name: 'Register',
+        inject: ['reload'],
+        components: {
+            'app-header' : Header
+        },
         data(){
             return{
                 phoneNumber: '',
@@ -81,6 +89,10 @@
         },
         mounted: function(){
             // this.commonService.routepath(this.$route.path)
+            if(this.commonService.islogin()){
+                this.$router.push('/account');
+                this.reload();
+            }
         },
         methods:{
             checkForm: function(e){
@@ -114,11 +126,13 @@
                     return false;
                 }
                 this.registerStatus = true;
-                let _url = '//api.bi.ceo/api/TokenAuth/Authenticate';
+                let _url = this.apiService+'Account/RegisterByPhone';
                 let PostData = {};
                 PostData.phoneNumber = this.phoneNumber;
                 PostData.phoneNumberCode = this.phonecode;
                 PostData.password = this.password;
+                PostData.referrerUser = 0;
+                PostData.captchaResponse = '';
                 let that = this;
                 this.$http.post(_url,PostData).then(function(res){
                     that.registerStatus = false;

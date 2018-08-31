@@ -44,7 +44,7 @@ em,i{
 }
 
 .footer{
-    padding: 30px 5%;
+    padding: 30px 0;
     display: flex;
     background:#032133 url(../images/footer_bg.png) no-repeat top center;
 }
@@ -73,7 +73,7 @@ em,i{
 .footer .link-item dd{
     padding-top: 20px;
 }
-input,textarea{
+input,textarea,button{
     border:none;
     outline:none;
     resize:none;
@@ -127,6 +127,7 @@ input,textarea{
     background: url(../../assets/images/bj_img1.png) no-repeat top center;
     padding: 30px 0 50px;
 }
+
 
 .account-item{
     max-width: 1400px;
@@ -262,11 +263,11 @@ input,textarea{
     background: none;
 }
 
-.el-popper[x-placement^=bottom] .popper__arrow {
+.el-dropdown-menu.el-popper[x-placement^=bottom] .popper__arrow {
 	border-bottom-color:rgba(1,126,255,0.2);
 }
 
-.el-popper[x-placement^=bottom] .popper__arrow::after {
+.el-dropdown-menu.el-popper[x-placement^=bottom] .popper__arrow::after {
 	border-bottom-color: rgba(1,126,255,0.2);
 }
 
@@ -325,3 +326,313 @@ input,textarea{
 .el-table th{
     padding: 0
 }
+
+
+.wrap{
+    min-width: 1400px;
+}
+.wrap-item{
+    width: 1400px;
+    margin: 0 auto;
+    
+    padding: 30px 0 50px;
+}
+
+.adsoption .el-input__inner,
+.adsoption .el-input__inner:hover{
+    background: transparent;
+    border-color: #017efe;
+    height: 30px;
+    line-height: 30px;
+    color: #ffffff
+}
+.adsoption .el-input__icon{
+    line-height: 30px;
+}
+.adsoption .el-button{
+    padding: 0 10px;
+    line-height: 29px;
+    height: 29px;
+    position: relative;
+    top: 1px;
+}
+ 
+.pushtype .el-select{
+    width: 20%;
+    margin-right: 10px;
+}
+.pushtype .el-input__inner,
+.pushtype .el-input__inner:focus,
+.pushtype .el-input__inner:hover{
+    background: transparent;
+    border-color: #017EFF;
+    color: #ffffff
+}
+
+.solditem .el-tabs__nav-wrap:after{
+    display: none
+}
+
+.solditem .el-tabs__item{
+    border:solid 1px #017EFF;
+    color: #ffffff;
+    margin-right: 20px;
+    border-radius: 3px
+}
+.solditem .el-tabs__active-bar{
+    display: none;
+}
+.solditem .el-tabs--top .el-tabs__item.is-top:last-child{
+    padding-right: 20px;
+}
+.solditem .el-tabs--top .el-tabs__item.is-top:nth-child(2){
+    padding-left: 20px;
+}
+.solditem .el-tabs__item.is-active{
+    background: #017EFF;
+    color: #ffffff
+}
+.marketitem .el-select{
+    width: 100%;
+}
+.marketitem .el-input__inner,
+.marketitem .el-input__inner:focus,
+.marketitem .el-input__inner:hover
+{
+    background: transparent;
+    border-color: #017EFF;
+    color: #ffffff
+}
+
+.premium .el-slider__runway.show-input{
+    margin-right: 300px;
+}
+.premium  .el-slider__input{
+    width: 250px;
+}
+
+.premium .el-slider__input .el-input__inner,
+.premium .el-input-number__increase,
+.premium .el-input-number__decrease{
+    background: transparent;
+    border-color: #017EFF;
+    color: #ffffff
+}
+.premium .el-input-number--small{
+    line-height: 40px;
+}
+.premium .el-input--small .el-input__inner{
+    height: 40px;
+    line-height: 40px;
+}
+.premium .el-slider__runway,
+.premium .el-slider__bar{
+    height: 20px;
+    border-radius: 10px;
+}
+.premium .el-slider__button-wrapper{
+    height: 50px;
+    width: 50px;
+}
+.premium .el-slider__button{
+    width: 30px;
+    height: 30px;
+    border-width: 5px;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+ }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+.autoitem .el-checkbox__label{
+    color: #ffffff
+}
+
+.el-loading-item{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+.el-loading-item .el-loading-mask{
+    background-color: rgba(12, 31, 44, 0.4);
+}
+#header-item{
+    background: url(../images/nav_bg.jpg)  center top;
+    height: 92px;
+    min-width: 1400px;
+}
+#header-item .header{
+    max-width: 1400px;
+}
+.userinfo-record .el-tabs__item{
+    color: #ffffff;
+    line-height: 50px;
+    height: 50px;
+}
+.userinfo-record .el-tabs__nav-wrap{
+    margin-left: -40px;
+    margin-right: -40px;
+    padding-left: 40px;
+}
+.userinfo-record .el-tabs__nav-wrap:after{
+    left: -40px;
+    background: rgba(255,255,255,0.2);
+    height: 1px;
+    bottom: 1px;
+}
+.userinfo-record .el-tabs__active-bar{
+    height: 3px;
+    background: #0080FF;
+    border-radius: 3px;
+}
+.userinfo-record .el-tabs__content{
+    padding: 10px 0;
+}
+.pagination-item{
+    padding: 30px 0 20px;
+    text-align: center;
+}
+.pagination-item .el-pagination{
+    color: #ffffff
+}
+.pagination-item .el-pager li{
+    background: transparent
+}
+.pagination-item .el-pagination button:disabled{
+    background: transparent;
+    color: #999999
+}
+.pagination-item .el-pagination .btn-next,.pagination-item .el-pagination .btn-prev{
+    background: transparent;
+    color: #ffffff
+}
+.pagination-item .el-pagination .btn-next:hover,.pagination-item .el-pagination .btn-prev:hover{
+    color: #0080FF
+}
+.pagination-item .el-pager li.btn-quicknext, .pagination-item .el-pager li.btn-quickprev{
+    color: #ffffff
+}
+.solditem .el-tabs__item.is-disabled{
+    background: rgba(255,255,255,0.3);
+    border:none;
+    cursor: not-allowed;
+}
+.icon {
+    /* 通过设置 font-size 来改变图标大小 */
+    width: 1em; height: 1em;
+    /* 图标和文字相邻时，垂直对齐 */
+    vertical-align: -0.15em;
+    /* 通过设置 color 来改变 SVG 的颜色/fill */
+    fill: currentColor;
+    /* path 和 stroke 溢出 viewBox 部分在 IE 下会显示
+       normalize.css 中也包含这行 */
+    overflow: hidden;
+  }
+.offers-left{
+    width: 400px;
+    float: left;
+    margin-right: 20px;
+    border-radius: 3px;
+}
+.offers-right{
+    float: left;
+    background: rgba(2,57,88,0.8);
+    padding: 0 70px 20px;
+    border-radius: 3px;
+    width: 980px;
+}
+.offers-right .el-input__inner,
+.offers-right .el-input__inner:hover{
+    background: transparent;
+    border:solid 1px #017eff;
+    border-radius: 3px;
+    height: 53px;
+    line-height: 53px;
+    color: #ffffff
+}
+.dealsterms .el-checkbox{
+    white-space: normal;
+    color: #ffffff;
+    padding-left: 12px;
+}
+.dealsterms .el-checkbox .el-checkbox__input{
+    position: absolute;
+    top: 3px;
+    left: 0;
+}
+.createoreditpage .el-form--label-top .el-form-item__label{
+    padding: 0;
+    color: #ffffff
+}
+.account-right .createoreditpage .el-input__inner{
+    border-color: transparent;
+    background: rgba(12, 31, 44, 0.4);
+    height: 60px;
+    line-height: 60px;
+}
+.takecoinapply-item{
+    width: 1000px;
+    margin: 0 auto;
+}
+.takecoinapply-item .verification .el-checkbox{
+    white-space: normal;
+    padding-left: 10px;
+    color: #ffffff;
+    margin-top: 20px;
+}
+.takecoinapply-item .verification .el-checkbox .el-checkbox__label{
+    line-height: 1.5;
+}
+.takecoinapply-item .verification .el-checkbox .el-checkbox__input{
+    position: absolute;
+    top: 4px;
+    left: 0;
+}
+.takecoinlist-item{
+    width: 1000px;
+    margin: 0 auto;
+}
+/*
+html{ height:100%;font-size:62.5%;}
+@media only screen and (max-width: 320px)
+{
+    html{font-size:75%!important;}
+    body{font-size:1.2rem!important;}
+    .wrap{min-width: 100%;}
+    .wrap-item{width: 100%}
+    .account{min-width: 100%;}
+    .account-item{max-width: 100%;}
+    .account-left{width: 100%}
+    #header-item{min-width: 100%}
+}
+@media only screen and (max-width: 560px)
+{
+    html{font-size:87.5%!important;}
+    body{font-size:1.3rem!important;}
+    .wrap{min-width: 100%;}
+    .wrap-item{width: 100%}
+    .account{min-width: 100%;}
+    .account-item{max-width: 100%;}
+    .account-left{width: 100%}
+    #header-item{min-width: 100%}
+}
+@media only screen and (max-width:767px)
+{
+    html{font-size:100%!important;}
+    body{font-size:1.4rem!important;}
+    .wrap{min-width: 100%;}
+    .wrap-item{width: 100%}
+    .account{min-width: 100%;}
+    .account-item{max-width: 100%;}
+    .account-left{width: 100%}
+    #header-item{min-width: 100%}
+}
+@media only screen and (min-width: 768px)
+{
+    html{font-size:62.5%!important;}
+    body{font-size:1.2rem!important;}
+}*/

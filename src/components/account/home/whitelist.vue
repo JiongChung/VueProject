@@ -44,9 +44,17 @@
         data(){
             return{
                 activeName: 'first',
-                lists: [
-                    
-                ]
+                lists: []
+            }
+        },
+        mounted: function(){
+           this.GetWhiteList(this.apiService + 'WhiteList/GetWhiteList');
+        },
+        methods: {
+            GetWhiteList(url){
+                this.$http.get(url).then(response => {
+                    this.lists = response.body.result.items;
+                });
             }
         }
     }

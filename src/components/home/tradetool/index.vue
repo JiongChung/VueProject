@@ -38,7 +38,7 @@
 </script>
 <style lang="less" scoped>
     .tradetool{
-        padding: 30px 1%;
+        padding: 30px 0;
         display: flex;
 
         ul{

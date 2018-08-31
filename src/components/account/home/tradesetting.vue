@@ -16,34 +16,21 @@
                             <li>是否在订单中显示</li>
                             <li>操作</li>
                         </ol>
-                        <ul class="clearfix">
+                        <div v-html="loadingHtml" v-show="isloading"></div>
+                        <ul class="clearfix" v-for="item in UserPaymentMethodList">
                             <li>
                                 <span class="img"><img src="../../../assets/images/6.png" alt=""></span>
-                                银行账号
+                                {{item.paymentMethodName}}
                             </li>
                             <li>
-                                用户信息：姓	名：陈小龙 开 户 行：中国银行
+                                用户信息：{{item.accountInfo}}
                             </li>
                             <li>
-                                是
+                                <span v-if="item.isShowOrder">是</span>
+                                <span v-if="!item.isShowOrder">否</span>
                             </li>
                             <li>
-                                <span class="btn-color" @click="EditAccount(0)">设置</span>
-                            </li>
-                        </ul>
-                        <ul class="clearfix">
-                            <li>
-                                <span class="img"><img src="../../../assets/images/6.png" alt=""></span>
-                                银行账号
-                            </li>
-                            <li>
-                                用户信息：姓	名：陈小龙 开 户 行：中国银行
-                            </li>
-                            <li>
-                                是
-                            </li>
-                            <li>
-                                <span class="btn-color" @click="EditAccount(1)">设置</span>
+                                <span class="btn-color" @click="EditAccount(item.paymentMethodId)">设置</span>
                             </li>
                         </ul>
                     </div>
@@ -54,9 +41,12 @@
             <el-tabs v-model="activeName">
                 <el-tab-pane label="编辑支付方式" name="first">
                     <div class="tradeeditbox">
-                        <form @submit="checkForm" action="#" method="post" novalidate="true">
-                            <h4>银行账号信息</h4>
-                            <textarea id="banktxt" name="banktxt">
+                        <el-form ref="form" :model="form">
+                            <h4 v-if="form.paymentMethodId == 1">银行账号信息</h4>
+                            <h4 v-if="form.paymentMethodId == 2">支付宝信息</h4>
+                            <h4 v-if="form.paymentMethodId == 3">微信信息</h4>
+                            <h4 v-if="form.paymentMethodId == 4">PayPal信息</h4>
+                            <textarea id="banktxt" name="banktxt" v-model="form.accountInfo">
                                 姓	名：陈小龙
                                 开  户  行：中国银行
                             </textarea>
@@ -65,13 +55,13 @@
                                 <input type="file" class="uploadbtn">
                             </div>
                             <label class="ordershow">
-                                <el-checkbox v-model="checked">展示在订单页面</el-checkbox>
+                                <el-checkbox v-model="form.isShowOrder">展示在订单页面</el-checkbox>
                             </label>
                             <div class="submit">
-                                <input type="submit" value="提交" class="btn">
+                                <el-button type="primary" @click="onSubmit" class="btn">提交</el-button>
                                 <span class="cancel" @click="cancelEdit">取消并返回</span>
                             </div>
-                        </form>
+                        </el-form>
                     </div>
                 </el-tab-pane>
             </el-tabs>
@@ -86,13 +76,27 @@
                 activeName: 'first',
                 tradesettingspage: true,
                 tradesettingsoptions: false,
-                checked: false
+                UserPaymentMethodList: [],
+                form: {
+                    accountInfo: '',
+                    isShowOrder: false,
+                    qrCodeId: '',
+                    paymentMethodId: 0
+                },
+                loadingHtml: '',
+                isloading: true
             }
         },
-
+        mounted: function(){
+           this.GetAllForUser(this.apiService + 'UserPaymentMethod/GetAllForUser');
+           this.loadingHtml = this.commonService.isloading();
+        },
         methods:{
-            checkForm: function(e){
-
+            onSubmit(){
+                let url = this.apiService + 'UserPaymentMethod/CreateOrUpdateUserPaymentMethod';
+                this.$http.post(url,this.form).then(res => {
+                    console.log(res)
+                });
             },
 
             cancelEdit: function(){
@@ -101,9 +105,23 @@
             },
 
             EditAccount: function(index){
-                console.log(index);
+                this.form.paymentMethodId = index;
                 this.tradesettingspage = false;
                 this.tradesettingsoptions = true;
+                for(let i=0; i<this.UserPaymentMethodList.length; i++){
+                    if(this.UserPaymentMethodList[i].paymentMethodId == index){
+                        this.form.accountInfo = this.UserPaymentMethodList[i].accountInfo;
+                        this.form.isShowOrder = this.UserPaymentMethodList[i].isShowOrder;
+                        break;
+                    }
+                }
+            },
+
+            GetAllForUser(url){
+                this.$http.get(url).then(response => {
+                    this.isloading = false;
+                    this.UserPaymentMethodList = response.body.result.items;
+                });
             }
         }
     })
@@ -133,11 +151,14 @@
         }
     }
     .tradesettinglist{
-        padding-top: 30px;
+        margin-top: 30px;
+        position: relative;
+        min-height: 150px;
 
         ol{
             display: flex;
             padding-bottom: 10px;
+            padding-top: 10px;
 
             li{
                 float: left;
