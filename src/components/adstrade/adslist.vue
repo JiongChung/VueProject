@@ -60,7 +60,7 @@
             </li>
             <li>
                 <span class="limit">
-                    {{item.mixPrice}}-{{item.maxPrice}}
+                    <b v-show="!isPC">限额：</b>{{item.mixPrice}}-{{item.maxPrice}}
                 </span>
                 <span class="currency normal">
                     CNY
@@ -91,8 +91,12 @@
                 adsTradeList: [],
                 isFinish: false,
                 isNodata: false,
-                adsType: 0
+                adsType: 0,
+                isPC: true
             }
+        },
+        mounted(){
+            this.isPC = this.commonService.getWindowWidth() < 769 ? false : true;
         },
         watch: {
             'AdsListData': function (newVal, oldVal) {
@@ -219,4 +223,77 @@
             padding: 50px 0;
         }
     }
+@media only screen and (min-width: 320px) and (max-width:768px){
+    .adstradedata ol{
+        display: none;
+    }
+    .adstradedata ul li{
+        width: 100%;
+    } 
+    .adstradedata ul li span:first-child{
+        margin-top: 7px
+    }
+    .adstradedata ul li:nth-child(2),
+    .adstradedata ul li:nth-child(1){
+        width: 100%;
+    }
+    .adstradedata ul{
+        padding-left: 15px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        position: relative;
+    }
+    .adstradedata ul li:nth-child(2){
+        clear: both;
+    }
+    .adstradedata ul li:nth-child(1){
+        margin-left: -10px;
+    }
+    .adstradedata ul li:nth-child(2) span{
+        float: left;
+        margin-top: 0;
+        padding-top: 0;
+        line-height: 14px;
+        padding-right: 15px;
+    }
+    .adstradedata ul li:nth-child(4){
+        width: 100%;
+    }
+    .adstradedata ul li:nth-child(4) span{
+        margin-top: 0;
+        padding-top: 0;
+        float: left;
+        padding-right: 10px;
+        line-height: 14px;
+    }
+    .adstradedata ul li:nth-child(5){
+        position: absolute;
+        top: 15px;
+        right: 0;
+        text-align: right;
+    }
+    .adstradedata ul li:nth-child(5) span{
+        margin-top: 0;
+        padding-top: 0;
+        float: none;
+        padding-right: 15px;
+        line-height: 14px;
+    }
+    .adstradedata ul li:nth-child(5) span:first-child{
+        font-size: 18px;
+        padding-bottom: 5px
+    }
+    .adstradedata ul li:nth-child(6){
+        width: 100%;
+        margin-top: -50px;
+        text-align: right;
+        padding-right: 15px;
+    }
+    .adstradedata ul li{
+        padding: 5px 0;
+    }
+    .adstradedata ul li:nth-child(4) span b{
+        font-weight: normal
+    }
+}
 </style>

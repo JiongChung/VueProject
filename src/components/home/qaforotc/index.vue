@@ -131,4 +131,31 @@
             padding-left: 3%
         }
     }
+
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        .qaforotc{
+            display: block;
+            padding: 0;
+        }
+        .qaforotc .item{
+            float: none;
+            width: 100%;
+            padding: 0 15px;
+            margin-bottom: 20px;
+        }
+        .qaforotc .item h4{
+            margin-bottom: 10px;
+        }
+        .qaforotc .item ul{
+            min-height: auto;
+            padding: 0 15px;
+        }
+        .qaforotc .item ul li{
+            padding: 10px 0;
+        }
+
+        .qaforotc .item + .item{
+            padding-left: 15px;
+        }
+    }
 </style>

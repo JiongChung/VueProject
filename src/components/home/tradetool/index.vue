@@ -84,4 +84,36 @@
             
         }
     }
+
+    @media only screen and (min-width: 1280px) and (max-width:1366px){
+        .tradetool ul li .item{
+            background-size: 100%;
+            width: 280px;
+            height:181px;
+            padding-top: 30px;
+        }
+    }
+
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        .tradetool{
+            display: block;
+            padding:10px 0 0;
+        }
+        .tradetool ul{
+            height: 100%;
+        }
+
+        .tradetool ul li{
+            width:100%;
+            float: none;
+            padding: 7px 15px;
+        }
+
+        .tradetool ul li .item{
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            padding: 20px 0;
+        }
+    }
 </style>

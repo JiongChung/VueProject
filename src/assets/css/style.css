@@ -467,6 +467,7 @@ input::-webkit-inner-spin-button {
 }
 #header-item .header{
     max-width: 1400px;
+    position: relative;
 }
 .userinfo-record .el-tabs__item{
     color: #ffffff;

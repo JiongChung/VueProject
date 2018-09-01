@@ -119,5 +119,8 @@ export default{
             child[i].classList.remove('active');
         }
         obj.target.classList.add('active');
+    },
+    getWindowWidth: function(){
+        return window.screen.width;
     }
 }

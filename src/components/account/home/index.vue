@@ -169,4 +169,25 @@
             background: rgba(255,255,255,0.1);
         }
     }
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        .tradesettings{
+            padding-top: 20px;
+        }
+        .tradesettings .settingsitem .name{
+            float: none;
+            width: 100%;
+            display: block
+        }
+        .tradesettings .settingsitem .name:before{
+            display: none;
+        }
+        .tradesettings .settingsitem .text{
+            display: block;
+            float: none;
+            padding: 10px 20px 0 0;
+            color: #999999;
+            line-height: 1.5;
+            font-size: 12px;
+        }
+    }
 </style>

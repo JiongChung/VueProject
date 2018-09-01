@@ -315,4 +315,33 @@
             }
         }
     }
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        .login{
+            padding: 10px 15px;
+            background-size: 100%;
+        }
+        .login .login-item{
+            min-height: auto;
+            display: block;
+        }
+        .login .login-item .info{
+            display: none;
+        }
+        .login .login-item .login-box{
+            flex: auto;
+            width: 100%;
+            padding: 0;
+        }
+        .login .login-item .login-box h4{
+            padding: 15px 0;
+            text-align: center;
+        }
+        .login .login-item .login-box ul{
+            padding: 0 15px;
+        }
+        .login .login-item .login-box ul li{
+            max-width: 100%;
+            padding-bottom: 35px;
+        }
+    }
 </style>

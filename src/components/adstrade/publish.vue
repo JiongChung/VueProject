@@ -828,4 +828,73 @@ export default {
            }
        }
     }
+
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        .publishpage{
+            padding: 0;
+            margin-left: 15px;
+            margin-right: 15px;
+            margin-top: 10px;
+        }
+        .publishpage .pushitem{
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .publishpage .marketprice{
+            display:block;
+        }
+        .publishpage .marketprice .marketitem,
+        .publishpage .marketprice .marketitem:first-child{
+            width: 100%;
+            padding-right: 0;
+            float: none;
+            padding-top: 15px;
+        }
+        .publishpage .marketprice .marketitem h4{
+            padding-bottom: 5px;
+        }
+        .publishpage .marketprice .marketitem .lowprice{
+            line-height: 1;
+        }
+        .publishpage .premium{
+            padding-left: 0;
+        }
+        .publishpage .premium .premiumtools{
+            display: block;
+        }
+        .publishpage .premium .premiumtools .formula{
+            flex: auto;
+            text-align: center;
+            float: none;
+        }
+        .publishpage .premium .premiumtools .premiumpricetips{
+            float: none;
+            width: 100%;
+            padding-top: 10px;
+        }
+        .publishpage .paymentlist button{
+            margin-bottom: 10px;
+        }
+        .publishpage .limititem li{
+            float: none;
+            width: 100%;
+            padding-right: 0;
+            padding-bottom: 15px;
+        }
+        .publishpage .limititem li:last-child{
+            padding-bottom: 0
+        }
+        .publishattention{
+            padding: 0 15px 10px;
+        }
+        .publishpage .regularpricve li{
+            float: none;
+            width: 100%;
+            padding-bottom: 10px;
+        }
+        .publishpage .regularpricve li .currentlowprice{
+            padding: 0;
+        }
+    }
 </style>

@@ -193,4 +193,42 @@
             }
         }
     }
+
+    @media only screen and (min-width: 1280px) and (max-width:1366px){
+        .outsidetrade .tradelist ul li .item{
+            background-size: 100%;
+            width: 270px;
+            height:306px;
+        }
+    }
+
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        .outsidetrade{
+            padding: 0;
+        }
+        .outsidetrade .title{
+            margin-top: 15px;
+            height: 100%;
+        }
+
+        .outsidetrade .tradelist{
+            display: block;
+            padding: 30px 15px;
+        }
+
+        .outsidetrade .tradelist ul li{
+            float: none;
+            width: 100%;
+        }
+
+        .outsidetrade .tradelist ul li .item{
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            padding-right: 0;
+            padding-left: 0;
+            width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+    }
 </style>

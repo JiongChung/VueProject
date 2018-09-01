@@ -26,8 +26,14 @@
                                 用户信息：{{item.accountInfo}}
                             </li>
                             <li>
-                                <span v-if="item.isShowOrder">是</span>
-                                <span v-if="!item.isShowOrder">否</span>
+                                <div v-if="isPC">
+                                    <span v-show="item.isShowOrder">是</span>
+                                    <span v-show="!item.isShowOrder">否</span>
+                                </div>
+                                <div v-else>
+                                    <span v-show="item.isShowOrder">在订单中显示</span>
+                                    <span v-show="!item.isShowOrder">不在订单中显示</span>
+                                </div>
                             </li>
                             <li>
                                 <span class="btn-color" @click="EditAccount(item.paymentMethodId)">设置</span>
@@ -84,12 +90,14 @@
                     paymentMethodId: 0
                 },
                 loadingHtml: '',
-                isloading: true
+                isloading: true,
+                isPC: true
             }
         },
         mounted: function(){
            this.GetAllForUser(this.apiService + 'UserPaymentMethod/GetAllForUser');
            this.loadingHtml = this.commonService.isloading();
+           this.isPC = this.commonService.getWindowWidth() < 769 ? false : true;
         },
         methods:{
             onSubmit(){
@@ -285,6 +293,49 @@
                 float: left;
                 margin-left: 20px                
             }
+        }
+    }
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        .tradetipsbox li{
+            line-height: 1.5;
+        }
+        .tradetipsbox{
+            margin-top: 0;
+            padding: 0 15px;
+        }
+
+        .tradesettinglist ol{
+            display: none;
+        }
+        .tradesettinglist ul{
+            display: block;
+        }
+        .tradesettinglist ul li{
+            float: none;
+            width: 100%;
+        }
+        .tradesettinglist ul li:nth-child(2){
+            flex: auto;
+            max-height: 26px;
+        }
+        .tradesettinglist ul li:nth-child(3){
+            width: 100%;
+            text-align: left;
+        }
+        .tradesettinglist ul li:nth-child(4){
+            float: none;
+            width: 100%;
+            text-align: left;
+        }
+        .tradesettinglist ul li:nth-child(4) .btn-color{
+            padding: 7px 20px;
+        }
+        .tradeeditbox .submit{
+            padding-top: 20px;
+        }
+        .tradeeditbox .submit .btn,
+        .tradeeditbox .submit .cancel{
+            width: 40%;
         }
     }
 </style>

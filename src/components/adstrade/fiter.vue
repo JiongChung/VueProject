@@ -155,4 +155,18 @@ export default {
         float: right;
     }
 }
+@media only screen and (min-width: 320px) and (max-width:768px){
+    .menubar{
+        margin-left: 15px;
+        margin-right: 15px;
+        margin-bottom: 15px;
+    }
+    .menubar li{
+        float: none;
+        display: inline-block;
+    }
+    .menubar .adsoption{
+        padding-top: 15px;
+    }
+}
 </style>

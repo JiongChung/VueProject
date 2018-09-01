@@ -247,4 +247,27 @@
             width: 30%;
         }
     }
+
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        .avataritem{
+            padding-top: 0;
+        }
+        .formeditbox{
+            padding-top: 20px;
+        }
+        .formeditbox li{
+            float: none;
+            width: 100%;
+        }
+        .chnagepassword{
+            padding-top: 0;
+        }
+        .chnagepassword .tips{
+            line-height: 1.5;
+            padding-bottom: 20px;
+        }
+        .chnagepassword .passworditem{
+            width: 100%;
+        }
+    }
 </style>

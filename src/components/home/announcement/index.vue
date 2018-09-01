@@ -84,4 +84,31 @@
             }
         }
     }
+
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        .announcement{
+            padding: 0;
+        }
+        .announcement .announcement-item{
+            height: 100%;
+        }
+        .announcement .announcement-item{
+            display: block;
+        }
+
+        .announcement .announcement-item .title{
+            float: none;
+            padding-right: 0;
+        }
+
+        .announcement .announcement-item .list{
+            flex: 0;
+            float: none;
+        }
+
+        .announcement .announcement-item .list li{
+            float: none;
+            width: 100%;
+        }
+    }
 </style>

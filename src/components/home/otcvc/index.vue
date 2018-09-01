@@ -129,6 +129,32 @@
                 }
             }
         }
-        
+    }
+
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        .otcvc{
+            padding: 0;
+        }
+
+        .otcvc .title{
+            height: 100%;
+        }
+
+        .otcvc .otcvclist{
+            display: block;
+        }
+
+        .otcvc .otcvclist ul li{
+            width: 100%;
+            float: none;
+            padding: 7px 15px;
+        }
+
+        .otcvc .otcvclist ul li .item{
+            background: rgba(255,255,255,0.1);
+            width: 100%;
+            height: auto;
+            padding: 20px 0 0;
+        }
     }
 </style>

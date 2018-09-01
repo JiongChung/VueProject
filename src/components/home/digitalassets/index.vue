@@ -305,5 +305,28 @@
             }
         }
     }
+
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        .digitalassets{
+            padding: 15px 15px 0;
+        }
+
+        .digitalassets .assetslist{
+            display: block;
+            padding-bottom: 0;
+        }
+
+        .digitalassets .title{
+            height: 100%;
+            margin-top: 15px;
+        }
+
+        .digitalassets .assetslist ul li{
+            float: none;
+            flex: 0;
+            width: 100%;
+            padding-bottom: 15px;
+        }
+    }
 </style>
 

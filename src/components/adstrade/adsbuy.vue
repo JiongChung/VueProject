@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="adstradepage">
         <v-fiter 
             :setCoinoptions="coinoptions" 
             :setCountryoptions="countryoptions" 
@@ -423,6 +423,25 @@
                 min-height: 150px;
             }
         }
+    }
+}
+@media only screen and (min-width: 320px) and (max-width:768px){
+    .adslist-item{
+        display: block;
+        padding:  0 15px;
+    }
+    .adslist-item .ads-left{
+        float: none;
+        width: 100%;
+    }
+    .adslist-item .ads-right{
+        float: none;
+        flex: auto;
+        margin-top: 15px;
+    }
+    
+    .adslist-item .ads-left .commonproblem{
+        display: none;
     }
 }
 </style>

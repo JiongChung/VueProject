@@ -1,5 +1,5 @@
 <template>
-    <div class="swiper-container">
+    <div class="swiper-container" id="swiper-set-height">
         <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="str in listImg" :style="{ background: 'url(' + str.url + ') no-repeat center top' }"></div>
         </div>
@@ -24,11 +24,12 @@
                     {url: b},
                     {url: c},
                     {url: d}
-                ]
+                ],
+                isPC: true,
             }
         },
         mounted() {
-            console.log('mounted', this)
+            console.log('mounted', this);
             var swiper = new Swiper('.swiper-container', {
                 pagination: {
                     el: '.swiper-pagination',
@@ -41,6 +42,12 @@
                     swiper.startAutoplay()
                 }
             });
+            this.isPC = this.commonService.getWindowWidth() < 769 ? false : true;
+            if(this.isPC == false){
+                let HTML = document.getElementById('swiper-set-height');
+                HTML.style.height = this.commonService.getWindowWidth() * 700 / 1920 +'px';
+            }
+            
         }
     }
 </script>
@@ -50,6 +57,13 @@
         height: 700px;
     }
     .swiper-slide{
-        width: 100% !important
+        width: 100% !important;
+        background-size: 100% !important;
+    }
+
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        .swiper-container {
+            height: 350px;
+        }
     }
 </style>
