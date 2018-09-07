@@ -23,7 +23,10 @@
                                 {{item.paymentMethodName}}
                             </li>
                             <li>
-                                用户信息：{{item.accountInfo}}
+                                <span v-if="item.id">
+                                    用户信息：{{item.accountInfo}}
+                                </span>
+                                <span v-else>未设置</span>
                             </li>
                             <li>
                                 <div v-if="isPC">
@@ -36,7 +39,8 @@
                                 </div>
                             </li>
                             <li>
-                                <span class="btn-color" @click="EditAccount(item.paymentMethodId)">设置</span>
+                                <span class="btn-color" @click="EditAccount(item.paymentMethodId)" v-if="!item.id">设置</span>
+                                <span class="btn-color" @click="EditAccount(item.paymentMethodId)" v-else>修改</span>
                             </li>
                         </ul>
                     </div>
@@ -64,7 +68,7 @@
                                 <el-checkbox v-model="form.isShowOrder">展示在订单页面</el-checkbox>
                             </label>
                             <div class="submit">
-                                <el-button type="primary" @click="onSubmit" class="btn">提交</el-button>
+                                <button type="button" class="btn-color btn-submit" @click="onSubmit($event)" >提交</button>
                                 <span class="cancel" @click="cancelEdit">取消并返回</span>
                             </div>
                         </el-form>
@@ -77,6 +81,7 @@
 <script type="ts">
     import Vue from 'vue'
     export default Vue.extend({
+        inject: ['reload'],
         data(){
             return{
                 activeName: 'first',
@@ -86,12 +91,13 @@
                 form: {
                     accountInfo: '',
                     isShowOrder: false,
-                    qrCodeId: '',
-                    paymentMethodId: 0
+                    paymentMethodId: 0,
+                   
                 },
                 loadingHtml: '',
                 isloading: true,
-                isPC: true
+                isPC: true,
+                loadingStatus: false
             }
         },
         mounted: function(){
@@ -100,16 +106,34 @@
            this.isPC = this.commonService.getWindowWidth() < 769 ? false : true;
         },
         methods:{
-            onSubmit(){
+            onSubmit(obj){
+                if(this.loadingStatus)return;
+
+                this.loadingStatus = true;
+                obj.target.classList.add('loading');
+                let data = {};
+                data.userPaymentMethod = this.form;
                 let url = this.apiService + 'UserPaymentMethod/CreateOrUpdateUserPaymentMethod';
-                this.$http.post(url,this.form).then(res => {
-                    console.log(res)
+                this.$http.post(url,data).then(res => {
+                    console.log(res);
+                    this.loadingStatus = false;
+                    obj.target.classList.remove('loading');
+                    this.cancelEdit();
+                    this.$notify({
+                        title: '',
+                        message: '修改成功',
+                        type: 'success'
+                    });
+                }, err => {
+                    this.loadingStatus = false;
+                    obj.target.classList.remove('loading');
                 });
             },
 
             cancelEdit: function(){
                 this.tradesettingspage = true;
                 this.tradesettingsoptions = false;
+                this.reload();
             },
 
             EditAccount: function(index){
@@ -120,6 +144,7 @@
                     if(this.UserPaymentMethodList[i].paymentMethodId == index){
                         this.form.accountInfo = this.UserPaymentMethodList[i].accountInfo;
                         this.form.isShowOrder = this.UserPaymentMethodList[i].isShowOrder;
+                        // this.form.id = this.UserPaymentMethodList[i].id;
                         break;
                     }
                 }
@@ -269,16 +294,11 @@
         .submit{
             padding-top: 50px;
 
-            .btn{
-                background: linear-gradient(to right, #00B4FF, #0080FF);
-                padding: 10px 0;
+            .btn-color{
                 width: 180px;
                 text-align: center;
-                color: #ffffff;
-                cursor: pointer;
-                font-size: 16px;
-                border-radius: 5px;
                 float: left;
+                font-size: 16px;
             }
 
             .cancel{

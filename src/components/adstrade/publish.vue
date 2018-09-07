@@ -896,5 +896,8 @@ export default {
         .publishpage .regularpricve li .currentlowprice{
             padding: 0;
         }
+        .publishpage .needlogin{
+            margin: 0;
+        }
     }
 </style>

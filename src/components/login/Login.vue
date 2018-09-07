@@ -19,7 +19,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="login-box">
+                <div class="login-box" v-if="twoFactorVerification">
                     <h4>登录</h4>
                     <form 
                         @submit="checkForm"
@@ -46,6 +46,24 @@
                         </ul>
                     </form>
                 </div>
+                <div class="login-box" v-else>
+                    <h4>两步验证</h4>
+                    <div class="verification-item">
+                        <span class="text">
+                            请输入您的手机验证码
+                        </span>
+                        
+                        <ul>
+                            <li class="inputbox">
+                                <input id="phonecode" v-on:input="watchPhonecode" v-model="phonecode" name="phonecode" rule="phonecode" type="text" class="validate" maxlength="6" msg="请输入有效手机验证码" placeholder="请输入手机验证码">
+                                <span class="err-tips" v-show="phonecodeStatus">请输入有效手机验证码</span>
+                            </li>
+                            <li class="submit">
+                                <input type="submit" id="loginsubmitbtn" @click="checkForm($event)" value="登录">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -66,7 +84,15 @@
                 loginStatus: false,
                 phoneNumberStatus: false,
                 passwordStatus: false,
-                passwordStatusErr: false
+                passwordStatusErr: false,
+                twoFactorVerification: true,
+                phonecode: '',
+                phonecodeStatus: false,
+                getphonecodestatus: true,
+                phonecodeTimer: 60,
+                twoFactorAuthProvidersText : '',
+                twoStep: false,
+                userId: ''
             }
         },
         beforeRouteEnter (to, from, next) {
@@ -81,6 +107,41 @@
             }
         },
         methods:{
+            watchPhonecode: function(e){
+                this.phonecodeStatus = false;
+            },
+            getPhoneCode: function(e){
+                if(this.getphonecodestatus){
+                    this.getPhoneCodeNow(e.target);
+                    this.SendSmsCode(this.apiService + 'Account/SendSmsCode', this.userNameOrEmailAddressOrPhoneNumber);
+                }
+            },
+            getPhoneCodeNow: function(o){
+                let that = this;
+                if(this.phonecodeTimer === 0) {
+                    o.innerHTML = "获取验证码";
+                    this.phonecodeTimer = 60;
+                    this.getphonecodestatus = true;
+                } else {
+                    this.getphonecodestatus = false;
+                    o.innerHTML = '重新发送(' + this.phonecodeTimer + 's)';
+                    this.phonecodeTimer--;
+                    setTimeout(function() {
+                        that.getPhoneCodeNow(o)
+                    }, 1000);
+                }
+            },
+            SendSmsCode(url, phone){
+                let that = this;
+                this.$http.post(url, {"phoneNumber": phone, "codeType": 2}).then(response => {
+                    console.log(response);
+                },err => {
+                    that.phoneNumberOccupiedStatus = true;
+                    console.log(err)
+                });
+                
+            },
+            
             checkForm: function(e){
                 if(this.loginStatus == true){
                     e.preventDefault();
@@ -95,6 +156,14 @@
                     status = true;
                     this.passwordStatus = true;
                 }
+                if(this.twoStep){
+                    if(this.twoFactorAuthProvidersText == 'Phone'){
+                        if(!this.commonService.zValidate.int(this.phonecode)){
+                            status = true;
+                            this.phonecodeStatus = true;
+                        }
+                    }
+                }
                 if(status){
                     e.preventDefault();
                     return false;
@@ -104,7 +173,10 @@
                 let PostData = {};
                 PostData.userNameOrEmailAddressOrPhoneNumber = this.userNameOrEmailAddressOrPhoneNumber;
                 PostData.password = this.password;
-
+                if(this.twoStep){
+                   PostData.twoFactorVerificationCode = this.phonecode;
+                }
+                
                 let that = this;
                 this.loginStatus = true;
                 let loginsubmitbtn = document.getElementById('loginsubmitbtn');
@@ -113,10 +185,24 @@
                 this.$http.post(_url,PostData).then(function(res){
                     that.loginStatus = false;
                     let data = res.body.result;
-                    that.commonService.TokenCommonSet.setCookie('__accessToken',data.accessToken);
-                    that.commonService.TokenCommonSet.setCookie('__userId',data.userId);
-                    window.localStorage.setItem('__accessToken',data.accessToken);
-                    this.$router.push(fullPath);
+                    console.log(data)
+                    if(data.requiresTwoFactorVerification){
+                        that.twoFactorVerification = false;
+                        that.twoStep = true;
+                        if(data.twoFactorAuthProviders == 'Phone'){
+                            that.twoFactorAuthProvidersText = 'Phone';
+                        }
+                        that.sendtwoFactorAuth(data.userId, data.twoFactorAuthProviders);
+                    }else{
+                        that.commonService.TokenCommonSet.setCookie('__accessToken',data.accessToken);
+                        that.commonService.TokenCommonSet.setCookie('__userId',data.userId);
+                        window.localStorage.setItem('__accessToken',data.accessToken);
+                        this.$router.push(fullPath);
+                    }
+                    
+
+
+
                     // if(fullPath.indexOf('register') > -1 || fullPath.indexOf('login')){
                     //     this.$router.push('/');
                     // }else{
@@ -129,6 +215,18 @@
                 });
                 e.preventDefault();
                 return false;
+            },
+
+            sendtwoFactorAuth(userid, code){
+                let PostData = {};
+                PostData.userId = userid;
+                PostData.provider = code;
+                let _url = '//api.bi.ceo/api/TokenAuth/SendTwoFactorAuthCode';
+                this.$http.post(_url,PostData).then(function(res){
+                    console.log(res)
+                },function(err){
+                    console.log(err)
+                });
             },
 
             watchphoneNumber: function(e){
@@ -205,7 +303,18 @@
                     li{
                         padding-bottom: 50px;
                         max-width: 80%;
-                        position: relative;
+                        position: relative;   
+                        
+                        .getcode{
+                            position: absolute;
+                            top: 9px;
+                            right: 20px;
+                            height: 20px;
+                            line-height: 20px;
+                            font-size: 12px;
+                            color: blue;
+                            cursor: pointer;
+                        }
 
                         .err-tips{
                             position: absolute;
@@ -219,10 +328,7 @@
                         background: linear-gradient(to right, #00B4FF, #0080FF);
                         cursor: pointer;
                     }
-                    li.submit input.loading{
-                        background: #f4f4f4 url(../../assets/images/loading_3.gif) no-repeat center center;
-                        text-indent: -9999px;
-                    }
+                   
                     li.forgot{
                         display: flex;
 
@@ -244,6 +350,19 @@
                 }
                 :-ms-input-placeholder {
                     color: #eeeeee;
+                }
+
+                .verification-item{
+                    padding: 0 100px;
+
+                    .text{
+                        padding: 20px 0 0;
+                        display: block;
+                    }
+
+                    ul{
+                        padding: 40px 0 0;
+                    }
                 }
             }
         }
@@ -276,6 +395,12 @@
         .login .login-item .login-box ul li{
             max-width: 100%;
             padding-bottom: 35px;
+        }
+        .login .login-item .login-box .verification-item{
+            padding: 0 15px;
+        }
+        .login .login-item .login-box .verification-item .text{
+            padding-top: 10px;
         }
     }
 </style>

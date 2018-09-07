@@ -37,10 +37,10 @@
                                 </span>
                                 <el-collapse-transition>
                                     <ul v-show="Assetsitem">
-                                        <li><a href="">我的帐号</a></li>
-                                        <li><a href="">我的钱包</a></li>
-                                        <li><a href="">充值提币记录</a></li>
-                                        <li><a href="">退出</a></li>
+                                        <li><router-link to="/account">我的帐号</router-link></li>
+                                        <li><router-link to="/mywallet">我的钱包</router-link></li>
+                                        <li><router-link to="/takecoin">充值提币记录</router-link></li>
+                                        <li><a href="javascript:;" @click="logout">退出</a></li>
                                     </ul>
                                 </el-collapse-transition>
                             </div>
@@ -106,7 +106,7 @@
                                             <li><router-link to="/account">我的帐号</router-link></li>
                                             <li><router-link to="/mywallet">我的钱包</router-link></li>
                                             <li><router-link to="/takecoin">充值提币记录</router-link></li>
-                                            <li><a href="">退出</a></li>
+                                            <li><a href="javascript:;" @click="logout">退出</a></li>
                                         </ul>
                                     </el-collapse-transition>
                                 </div>
@@ -180,6 +180,10 @@
             },
             languageCommand(command){
                 this.$message('click on item ' + command);
+            },
+
+            logout(){
+                this.assetsCommand('e');
             }
         }
     }
@@ -311,6 +315,7 @@
         #header-item{
             background: #071f41;
             height: auto;
+            min-width: 100%;
         }
         #header-item .header .logo {
             width: 81px;

@@ -6,17 +6,12 @@
                     <h4>个人头像</h4>
                     <div class="pic">
                         <span class="img">
-                            <img src="../../../assets/images/avatar.jpg" alt="">
+                            <img src="../../../assets/images/avatar.jpg" id="Avatar" alt="">
                         </span>
                         <span class="text">上传新头像</span>
-                        <el-upload
-                            class="upload-demo"
-                            action="https://jsonplaceholder.typicode.com/posts/"
-                            :on-preview="handlePreview"
-                            multiple>
-                            <el-button size="big" type="primary">点击上传</el-button>
-                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                        </el-upload>
+                        
+                        <input type="file" id="imageUpload" ref="UploadAvatar" @change="UploadAvatar">
+                        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                     </div>
                 </div>
                 <div class="formeditbox">
@@ -79,17 +74,15 @@
                     <div class="passworditem">
                         <el-form ref="form" :model="passwordform">
                             <el-form-item>
-                                <el-input v-model="passwordform.currentPassword" placeholder="请输入您原先的密码"></el-input>
+                                <el-input type="password" v-model="passwordform.currentPassword" placeholder="请输入您原先的密码"></el-input>
                             </el-form-item>
                             <el-form-item>
-                                <el-input v-model="passwordform.newpasswords" placeholder="请输入您的新密码"></el-input>
+                                <el-input type="password" v-model="passwordform.newPassword" placeholder="请输入您的新密码"></el-input>
                             </el-form-item>
                             <el-form-item>
-                                <el-input v-model="passwordform.confirmpassword" placeholder="请再次输入您的新密码"></el-input>
+                                <el-input type="password" v-model="passwordform.confirmpassword" placeholder="请再次输入您的新密码"></el-input>
                             </el-form-item>
-                            <el-form-item>
-                                <el-button type="primary" @click="savePassword">确认修改</el-button>
-                            </el-form-item>
+                            <button type="button" class="btn-color btn-submit" @click="savePassword($event)" >确认修改</button>
                         </el-form>
                     </div>
                 </div>
@@ -137,17 +130,45 @@
                 },
                 passwordform: {
                     currentPassword: '',
-                    newpasswords:'',
+                    newPassword:'',
                     confirmpassword: ''
-                }
+                },
+                initUsername: '',
+                loadingStatus: false,
+                uploadImageUrl : '',
+                imageUrl: ''
             }
         },
         mounted: function(){
            this.GetUserProfileForEdit(this.apiService + 'Account/GetUserProfileForEdit');
         },
         methods: {
-            handlePreview(file) {
-                console.log(file);
+            handleAvatarSuccess(res, file) {
+        // this.imageUrl = URL.createObjectURL(file.raw);
+        console.log(file)
+      },
+            
+            UploadAvatar(){
+                this.uploadImageUrl = this.$refs.UploadAvatar.value;
+                console.log(this.$refs.UploadAvatar.value)
+                // console.log(this.$refs.UploadAvatar.files[0]);
+
+                 if (window.FileReader) {    
+                    var reader = new FileReader();    
+                    reader.readAsDataURL(this.$refs.UploadAvatar.files[0]);   
+                    reader.onloadend = function (e) {
+                         document.getElementById('Avatar').src = e.target.result;
+                    };    
+                } 
+
+            },
+            UpdateProfilePicture(url){
+                let data = {};
+                // data.fileName = this.uploadImageUrl;
+                data.fileName = 'C:/1.png';
+                this.$http.put(url,data).then(response => {
+                    console.log(response)
+                });
             },
             onSubmit() {
                 let status = false;
@@ -159,18 +180,65 @@
                     return false;
                 }
                 let url = this.apiService + 'Account/UpdateUserProfile';
-                this.$http.post(url,this.form).then(response => {
+                if(this.uploadImageUrl){
+                    this.UpdateProfilePicture(this.apiService + 'Profile/UpdateProfilePicture');
+                }
+                
+                this.$http.put(url,this.form).then(response => {
                     console.log(response)
                 });
             },
-            savePassword: function(){
-                console.log('submit!');
+            savePassword: function(obj){
+                if(this.loadingStatus == true){
+                    return false;
+                }
+                let status = false;
+                if(!this.commonService.zValidate.password(this.passwordform.currentPassword)){
+                    status = true;
+                    this.$message.error('请输入8位至20位英文数字组合密码');
+                }
+                if(!this.commonService.zValidate.password(this.passwordform.newPassword)){
+                    status = true;
+                    this.$message.error('请输入8位至20位英文数字组合密码');
+                }
+                if(!this.commonService.zValidate.password(this.passwordform.confirmpassword)){
+                    status = true;
+                    this.$message.error('请输入8位至20位英文数字组合密码');
+                }
+                if(this.passwordform.newPassword != this.passwordform.confirmpassword && this.passwordform.confirmpassword.length > 0 && this.passwordform.confirmpassword.length > 7){
+                    status = true;
+                    this.$message.error('两次密码输入不正确');
+                }
+                if(status){
+                    return false;
+                }
+                this.loadingStatus = true;
+                obj.target.classList.add('loading');
+                let url = this.apiService + 'Profile/ChangePassword';
+                delete this.passwordform.confirmpassword;
+                this.$http.post(url,this.passwordform).then(response => {
+                    console.log(response);
+                    this.$notify({
+                        title: '',
+                        message: '密码修改成功',
+                        type: 'success'
+                    });
+                    this.passwordform.currentPassword = '';
+                    this.passwordform.newPassword = '';
+                    this.passwordform.confirmpassword = '';
+                    this.loadingStatus = false;
+                    obj.target.classList.remove('loading');
+                }, err => {
+                    this.$message.error('您原先的密码不正确');
+                    this.loadingStatus = false;
+                    obj.target.classList.remove('loading');
+                });
             },
 
             GetUserProfileForEdit(url){
                 this.$http.get(url).then(response => {
                     this.form = response.body.result;
-                    console.log(this.form)
+                    this.initUsername = this.form.userName;
                 });
             }
         }

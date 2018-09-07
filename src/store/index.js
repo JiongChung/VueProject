@@ -122,5 +122,29 @@ export default{
     },
     getWindowWidth: function(){
         return window.screen.width;
+    },
+    setTimer: null,
+    getPhoneCodeNow: function(o, time, status, text, retext, type){
+        var that = this;
+        if(type != undefined && type == 'off'){
+            clearTimeout(this.setTimer)
+        }
+        
+        if(time === 0) {
+            o.innerHTML = text;
+            o.classList.remove('loading');
+            time = 60;
+            status = true;
+        } else {
+            status = false;
+            o.classList.add('loading');
+            o.innerHTML = retext + '(' + time + 's)';
+            time--;
+            this.setTimer = setTimeout(function() {
+                that.getPhoneCodeNow(o,time,status,text,retext)
+            }, 1000);
+        }
+
+        return status;
     }
 }

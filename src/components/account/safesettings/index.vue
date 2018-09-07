@@ -7,118 +7,59 @@
                         <li class="clearfix">
                             <span class="name">资金密码</span>
                             <span class="text">提现、修改安全设置时输入</span>
-                            <span class="options"><b class="btn-color" @click="setAssetPassword">设置</b></span>
+                            <span class="options">
+                                <b class="btn-color" ref='btnPassword' @click="setAssetPassword" v-if="!safeStatus.isTradePassword">立即设置</b>
+                                <b class="btn-color" ref='btnPassword' @click="setAssetPassword" v-else>修改</b>
+                            </span>
                         </li>
                         <li class="clearfix">
                             <span class="name">绑定邮箱</span>
                             <span class="text">用于登录、提币、修改安全时输入</span>
-                            <span class="options"><b class="btn-color" @click="setEmailNow">设置</b></span>
+                            <span class="options">
+                                <b class="btn-color" @click="setEmailNow" v-if="!safeStatus.isEmailAddress">立即设置</b>
+                                <b class="btn-color" @click="setEmailNow" v-else>修改</b>
+                            </span>
                         </li>
                         <li class="clearfix">
                             <span class="name">绑定手机</span>
                             <span class="text">提现、修改密码、及安全设置时用以收取验证短信</span>
-                            <span class="options"><b class="btn-color" @click="setPhoneNow">设置</b></span>
+                            <span class="options">
+                                <b class="btn-color" @click="setPhoneNow" v-if="!safeStatus.isPhoneNumber">立即设置</b>
+                                <b class="btn-color" @click="setPhoneNow" v-else>修改</b>
+                            </span>
                         </li>
                         <li class="clearfix">
                             <span class="name">谷歌验证</span>
                             <span class="text">绑定后，登录、提现时需要谷歌二次验证</span>
-                            <span class="options"><b class="btn-color" @click="setGoogleNow">启用</b></span>
+                            <span class="options">
+                                <b class="btn-color" @click="setGoogleNow" v-if="!safeStatus.isGoogleAuthenticator">启用</b>
+                                <b class="btn-color" @click="setGoogleNow" v-else>启用</b>
+                            </span>
                         </li>
                     </ul>
                 </div>
-                <div class="setassetpassword" v-if="showsetassetpassword">
-                    <h4>修改资金密码</h4>
-                    <span class="text">资金密码将用于资金的提款，保护您的资金不被他人轻易盗用</span>
-                    <el-form ref="form" :model="setAssetPasswordForm" class="assetpasswordform">
-                        <el-form-item>
-                            <el-input v-model="setAssetPasswordForm.currentTradePassword" placeholder="请输入原资金密码"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-input v-model="setAssetPasswordForm.newTradePassword" placeholder="请输入新资金密码"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-input v-model="setAssetPasswordForm.confirmTradePassword" placeholder="请再次输入资金密码"></el-input>
-                        </el-form-item>
-                        <el-form-item class="el-form-item-center">
-                            <el-button type="primary" @click="saveSetAssetPassword">确认修改</el-button>
-                            <el-button>忘记密码</el-button>
-                        </el-form-item>
-                    </el-form>
-                </div>
-                <div class="setassetpassword" v-if="isSetEmail">
-                    <h4>绑定邮箱</h4>
-                    <el-form ref="form" :model="setEmailForm" class="assetpasswordform">
-                        <el-form-item>
-                            <el-input v-model="setEmailForm.email" :disabled="isSendEmailCode" placeholder="请输入邮箱"></el-input>
-                            <div v-if="isSendEmailCode">已经发验证码到你的邮箱了，请查收</div>
-                        </el-form-item>
-                        <el-form-item v-if="isSendEmailCode">
-                            <el-input v-model="setEmailForm.emailcode" placeholder="请输入验证码"></el-input>
-                        </el-form-item>
-                        <el-form-item class="el-form-item-center">
-                            <el-button type="primary" @click="getEmailCode" v-if="!isSendEmailCode">下一步</el-button>
-                            <el-button type="primary" @click="saveEmailCode" v-if="isSendEmailCode">确定</el-button>
-                        </el-form-item>
-                    </el-form>
-                </div>
-                <div class="setassetpassword setemail" v-if="isSetEmailSuccess">
-                    <h4>恭喜您，验证邮箱成功！</h4>
-                    <span>
-                        3秒后自动返回上一级页面
-                    </span>
-                </div>
-                <div class="setassetpassword" v-if="isSetPhone">
-                    <div class="setphonestep clearfix">
-                        <span class="btn-color">验证旧手机</span>
-                        <span class="new" :class="{ 'gray' : !isNewDone, 'btn-color' : isNewDone}">验证新手机</span>
-                        <span class="done" :class="{ 'gray' : !isDone, 'btn-color' : isDone}">完成</span>
-                    </div>
-                    <div class="setphonetips" v-if="isSetDone">
-                        <span>修改手机号，24小时内限制提币和卖币。</span>
-                        <span>一个手机只能绑定一个账号。更换手机后，下次登录可使用新手机登录</span>
-                    </div>
-                    <div class="one" v-if="isOneStep">
-                        <div class="setphonebtn">
-                            <span class="btn-color" @click="sendOldPhoneCode">验证原手机</span>
-                        </div>
-                    </div>
-                    <div class="two" v-if="isTwoStep">
-                        <div class="setoldphonecode">
-                            验证码已经发至 <b>185***963</b>
-                            <div class="phonecodeitem">
-                                <input type="text" name="phonecode" placeholder="请输入验证码" v-model="phoneCode">
-                                <b class="getphonecode">获取验证</b>
-                            </div>
-                            <div class="setphonebtn">
-                                <span class="btn-color" @click="goToNext">下一步</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="three" v-if="isThreeStep">
-                        <div class="setnewphone">
-                            <el-form ref="form" :model="setNewPhoneForm">
-                                <el-form-item>
-                                    <el-input v-model="setNewPhoneForm.phoneNumber" placeholder="请输入新手机号" class="newphonenumber"></el-input>
-                                </el-form-item>
-                               <el-form-item>
-                                    <el-input v-model="setNewPhoneForm.phonecode" placeholder="请输入验证码" class="newphonenumber"></el-input>
-                                    <b class="getnewphonecode">获取验证</b>
-                                </el-form-item>
-                                <el-form-item>
-                                    <el-button type="primary" @click="saveNewPhone" class="newphonebtn">下一步</el-button>
-                                </el-form-item>
-                            </el-form>
-                        </div>
-                    </div>
-                    <div class="four" v-if="isFourStep">
-                        <div class="setsuccess">
-                            <h4>恭喜您，手机修改成功！</h4>
-                            <span>
-                                3秒后自动返回上一级页面
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <app-settradepassword 
+                    :setStatus="safeStatus.isTradePassword" 
+                    :showpassword="showsetassetpassword"
+                    v-on:listenTradePassword="showMsgFromTradePassword">
+                </app-settradepassword>
+                <app-forgetandsetpassword
+                   :setForgetPassWord="isShowForgetPassWord"
+                   v-on:listenTradePassword="showMsgFromTradePassword">
+                </app-forgetandsetpassword>
+
+                <app-setemail 
+                    :setStatus="safeStatus.isEmailAddress" 
+                    :setEmailStatus="isSetEmail"
+                    v-on:listenSetEmail="showMsgFromEmail">
+                </app-setemail>
+                
+                <app-setphone
+                    :setStatus="safeStatus.isPhoneNumber" 
+                    :setPhoneStatus="isSetPhone"
+                    v-on:listenSetPhone="showMsgFromPhone">
+                </app-setphone>
+                
                 <div class="setassetpassword" v-if="isSetGoogle">
                     <div class="setgoogle">
                         <h4>请先扫二维码或手动输入秘钥，将手机上生成的动态验证码填到下面的输入框</h4>
@@ -129,7 +70,17 @@
     </div>
 </template>
 <script>
+    import SetTradePassword from './setTradePassword';
+    import SetEmail from './setEmial';
+    import ForgetAndSetPassword from './forgetAndSetPassword';
+    import SetPhone from './setPhone';
     export default {
+        components: {
+            'app-settradepassword' : SetTradePassword,
+            'app-setemail' : SetEmail,
+            'app-forgetandsetpassword' : ForgetAndSetPassword,
+            'app-setphone' : SetPhone
+        },
         data(){
             return{
                 showsetlist: true,
@@ -139,36 +90,53 @@
                 isSetEmail: false,
                 isSetEmailSuccess: false,
                 isSetPhone: false,
-                isDone: false,
-                isNewDone: false,
+                isSetGoogle: false,
 
-                setAssetPasswordForm: {
-                    currentTradePassword: '',
-                    newTradePassword: '',
-                    confirmTradePassword: ''
+                safeStatus: {
+                    isEmailAddress: false,
+                    isGoogleAuthenticator: false,
+                    isPhoneNumber: false,
+                    isTradePassword: false
                 },
-
-                setEmailForm: {
-                    email: '',
-                    emailcode: ''
-                },
-
-                phoneCode: '',
-                isOneStep: true,
-                isTwoStep: false,
-                isThreeStep: false,
-                isFourStep: false,
-                isSetDone: true,
-
-                setNewPhoneForm: {
-                    phoneNumber: '',
-                    phonecode: ''
-                },
-
-                isSetGoogle: false
+                isShowForgetPassWord: false
             }
         },
+        mounted: function(){
+           this.GetUserSecurityForAccount(this.apiService + 'Account/GetUserSecurityForAccount');
+        },
         methods: {
+            showMsgFromPhone(data){
+                console.log(data);
+                this.isSetPhone = false;
+                this.showsetlist = true;
+                this.safeStatus.isPhoneNumber = true;
+            },
+            showMsgFromEmail(data){
+                this.isSetEmail = false;
+                this.showsetlist = true;
+                this.safeStatus.isEmailAddress = true;
+            },
+            showMsgFromTradePassword(data){
+                if(data == 'close'){
+                    this.showsetassetpassword = false;
+                    this.showsetlist = true;
+                }else if(data == 'forget'){
+                    this.showsetassetpassword = false;
+                    this.isShowForgetPassWord = true;
+                }else if(data == 'forgetsave'){
+                    this.showsetassetpassword = false;
+                    this.isShowForgetPassWord = false;
+                    this.showsetlist = true;
+                }
+            },
+            cancelEdit(){
+                console.log('aa');
+            },
+            GetUserSecurityForAccount(url){
+                this.$http.get(url).then(response => {
+                    this.safeStatus = response.body.result;
+                });
+            },
             setAssetPassword(){
                 this.showsetlist = false;
                 this.showsetassetpassword = true;
@@ -183,9 +151,7 @@
                 this.isSetEmail = true;
             },
 
-            getEmailCode(){
-                this.isSendEmailCode = true;
-            },
+           
 
             saveEmailCode(){
                 this.isSetEmailSuccess = true;
@@ -205,29 +171,7 @@
                 this.isSetPhone = true;
             },
 
-            sendOldPhoneCode(){
-                this.isOneStep = false;
-                this.isTwoStep = true;
-            },
-
-            goToNext(){
-                this.isThreeStep = true;
-                this.isTwoStep = false;
-                this.isNewDone = true;
-            },
-
-            saveNewPhone(){
-                this.isDone = true;
-                this.isThreeStep = false;
-                this.isFourStep = true;
-                this.isSetDone = false;
-
-                setTimeout(() => {
-                    this.showsetlist = true;
-                    this.isSetPhone = false;
-                    this.isFourStep = false;
-                },3000);
-            },
+           
 
             setGoogleNow(){
 
@@ -271,30 +215,7 @@
             }
         }
 
-        .setassetpassword{
-            padding-top: 20px;
-            h4{
-                text-align: center;
-                font-weight: normal;
-                padding-bottom: 20px;
-            }
-            .text{
-                display: block;
-                text-align: center;
-                padding-bottom: 40px;
-            }
-
-            .assetpasswordform{
-                width: 350px;
-                margin: auto;
-            }
-
-            .el-steps-item{
-                margin: auto;
-                background: red;
-                width: 400px;
-            }
-        }
+        
 
         .setemail{
 
@@ -417,6 +338,67 @@
                 display: block;
                 padding-top: 20px;
             }
+        }
+    }
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        .safepage .setlist li span{
+            display: block;
+            float: none;
+            width: 100%;
+        }
+        .safepage .setlist li .name{
+            width: 100%;
+        }
+        .safepage .setlist li .text{
+            color: #999999;
+            width: 100%;
+            padding-bottom: 10px;
+        }
+
+        .safepage .setassetpassword h4{
+            text-align: left;
+        }
+        .safepage .setassetpassword .text{
+            text-align: left;
+            padding-bottom: 15px;
+            line-height: 1.5;
+            color: #999999;
+        }
+        .safepage .setassetpassword{
+            padding-top: 0;
+        }
+        .safepage .setassetpassword .assetpasswordform{
+            width: 100%;
+        }
+        .safepage .setemail span{
+            padding-top: 0;
+            padding-bottom: 20px
+        }
+        .safepage .setassetpassword.setemail h4{
+            text-align: center;
+            padding-top: 10px;
+        }
+        .safepage .setphonestep{
+            width: 100%;
+            border-radius: 10px;
+            padding: 1px
+        }
+        .safepage .setphonestep span{
+            padding: 3px 7px;
+            border-radius: 10px;
+        }
+        .safepage .setphonestep span.new{
+            margin-left: 15%;
+        }
+        .safepage .setnewphone{
+            width:100%;
+        }
+        .safepage .setassetpassword .four .setsuccess h4{
+            text-align: center;
+        }
+        .safepage .setassetpassword .four .setsuccess span{
+            padding-top: 0;
+            padding-bottom: 20px;
         }
     }
 </style>

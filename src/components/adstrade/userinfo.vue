@@ -12,33 +12,33 @@
             </div>
             <div class="item">
                 <span>
-                    评价数：+491 / 0
+                    <em>评价数：</em>+491 / 0
                 </span>
                 <span>
-                    好评度：100.00%
+                    <em>好评度：</em>100.00%
                 </span>
                 <span>
-                    信任数：25
+                    <em>信任数：</em>25
                 </span>
                 <span>
-                    历史成交：5-20BTC
+                    <em>历史成交：</em>5-20BTC
                 </span>
                 <span>
-                    交易次数：952次
+                    <em>交易次数：</em>952次
                 </span>
             </div>
             <div class="item">
-                <span>邮箱验证：已完成<i class="el-icon-circle-check"></i></span>
-                <span>手机验证：已完成<i class="el-icon-circle-check"></i></span>
-                <span>实名验证：未完成</span>
-                <span>进阶验证：已完成<i class="el-icon-circle-check"></i></span>
+                <span><em>邮箱验证：</em>已完成<i class="el-icon-circle-check"></i></span>
+                <span><em>手机验证：</em>已完成<i class="el-icon-circle-check"></i></span>
+                <span><em>实名验证：</em>未完成</span>
+                <span><em>进阶验证：</em>已完成<i class="el-icon-circle-check"></i></span>
             </div>
             <div class="item">
                 <span>
-                    注册时间：2018-6-20
+                    <em>注册时间：</em>2018-6-20
                 </span>
                 <span>
-                    最后登录：2008-5-5
+                    <em>最后登录：</em>2008-5-5
                 </span>
                 <div class="options" v-if="isUserlogin">
                     <b class="btn-color">
@@ -56,14 +56,14 @@
                     <div class="evaluationrecord clearfix">
                         <div class="sortitem">
                             <span class="title">分类</span>
-                            <ul>
+                            <ul class="clearfix">
                                 <li class="active">全部</li>
                                 <li>有内容</li>
                             </ul>
                         </div>
                         <div class="evaluationtype">
                             <span class="title">评价类型</span>
-                            <ul>
+                            <ul class="clearfix">
                                 <li class="active">全部</li>
                                 <li>好评</li>
                                 <li>中评</li>
@@ -72,7 +72,7 @@
                         </div>
                     </div>
                     <div class="recordlist">
-                        <el-table
+                        <!-- <el-table
                             :data="tableData"
                             style="width: 100%">
                             <el-table-column
@@ -96,18 +96,119 @@
                                 prop="evaluationuser"
                                 label="评价用户">
                             </el-table-column>
-                        </el-table>
+                        </el-table> -->
+                        <ol class="clearfix">
+                            <li>广告交易</li>
+                            <li>评价</li>
+                            <li>评价内容</li>
+                            <li>评价时间</li>
+                            <li>评价用户</li>
+                        </ol>
+                        <ul class="clearfix" v-for="item in tableData">
+                            <li>{{item.usertrade}}</li>
+                            <li>{{item.appraise}}</li>
+                            <li>{{item.content}}</li>
+                            <li>{{item.date}}</li>
+                            <li>{{item.evaluationuser}}</li>
+                        </ul>
                         <v-page></v-page>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="出售记录" name="second">配置管理</el-tab-pane>
-                <el-tab-pane label="购买广告" name="third">角色管理</el-tab-pane>
+                <el-tab-pane label="出售记录" name="second">
+                    <div class="salesrecord">
+                        <ol class="clearfix">
+                            <li>出售币种</li>
+                            <li>收款币种</li>
+                            <li>出售单价</li>
+                            <li>交易限额</li>
+                            <li>交易方式</li>
+                            <li>最后更新</li>
+                            <li>广告状态</li>
+                            <li>操作</li>
+                        </ol>
+                        <ul class="clearfix">
+                            <li><em>出售币种</em>USDT</li>
+                            <li><em>收款币种</em>CNY</li>
+                            <li><em>出售单价</em>6.84 CNY</li>
+                            <li><em>交易限额</em>100 - 97,794.96 CNY</li>
+                            <li>
+                                <em>交易方式</em>
+                                <svg class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-yinhaozhanghao_blue_"></use>
+                                </svg>
+                            </li>
+                            <li><em>最后更新</em>2018-02-12 12:26</li>
+                            <li><em>广告状态</em>已上架</li>
+                            <li><span class="btn-color">查看</span></li>
+                        </ul>
+                        <ul class="clearfix">
+                            <li><em>出售币种</em>USDT</li>
+                            <li><em>收款币种</em>CNY</li>
+                            <li><em>出售单价</em>6.84 CNY</li>
+                            <li><em>交易限额</em>100 - 97,794.96 CNY</li>
+                            <li>
+                                <em>交易方式</em>
+                                <svg class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-yinhaozhanghao_blue_"></use>
+                                </svg>
+                            </li>
+                            <li><em>最后更新</em>2018-02-12 12:26</li>
+                            <li><em>广告状态</em>已上架</li>
+                            <li><span class="btn-color">查看</span></li>
+                        </ul>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="购买广告" name="third">
+                    <div class="salesrecord">
+                        <ol class="clearfix">
+                            <li>购买币种</li>
+                            <li>付款币种</li>
+                            <li>购买单价</li>
+                            <li>交易限额</li>
+                            <li>交易方式</li>
+                            <li>最后更新</li>
+                            <li>广告状态</li>
+                            <li>操作</li>
+                        </ol>
+                        <ul class="clearfix">
+                            <li><em>购买币种</em>USDT</li>
+                            <li><em>付款币种</em>CNY</li>
+                            <li><em>购买单价</em>6.84 CNY</li>
+                            <li><em>交易限额</em>100 - 97,794.96 CNY</li>
+                            <li>
+                                <em>交易方式</em>
+                                <svg class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-yinhaozhanghao_blue_"></use>
+                                </svg>
+                            </li>
+                            <li><em>最后更新</em>2018-02-12 12:26</li>
+                            <li><em>广告状态</em>已上架</li>
+                            <li><span class="btn-color">查看</span></li>
+                        </ul>
+                        <ul class="clearfix">
+                            <li><em>购买币种</em>USDT</li>
+                            <li><em>付款币种</em>CNY</li>
+                            <li><em>购买单价</em>6.84 CNY</li>
+                            <li><em>交易限额</em>100 - 97,794.96 CNY</li>
+                            <li>
+                                <em>交易方式</em>
+                                <svg class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-yinhaozhanghao_blue_"></use>
+                                </svg>
+                            </li>
+                            <li><em>最后更新</em>2018-02-12 12:26</li>
+                            <li><em>广告状态</em>已上架</li>
+                            <li><span class="btn-color">查看</span></li>
+                        </ul>
+                    </div>
+                </el-tab-pane>
             </el-tabs>
         </div>
     </div>
 </template>
 <script>
     import Pagination from '../page/index';
+    import '../../../static/fonts/iconfont.js';
     export default {
         components: {
             'v-page': Pagination
@@ -282,6 +383,146 @@
 
         .recordlist{
             padding-top: 30px;
+
+            ol,ul{
+                display: flex;
+                text-indent: 15px;
+            }
+            ol{
+                color: #999999;
+            }
+            li{
+                float: left;
+                width: 20%;
+                padding: 10px 0;
+            }
+            li:nth-child(1){
+                width: 25%
+            }
+            li:nth-child(3){
+                width: 35%
+            }
+            li:nth-child(2),
+            li:nth-child(5){
+                width: 10%;
+            }
+        }
+    }
+
+    .salesrecord{
+        ol,ul{
+            display: flex;
+        }
+        li{
+            float: left;
+            width: 10%;
+            padding: 10px 0;
+
+            em{
+                display: none;
+            }
+        }
+        li:nth-child(4){
+            width: 20%;
+        }
+        li:nth-child(5),
+        li:nth-child(6){
+            width: 15%;
+        }
+        ol{
+            color: #999999;
+        }
+    }
+
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        .userinfopage{
+            padding: 0 15px;
+        }
+        .userinfo-item{
+            padding: 15px;
+        }
+        .userinfo-item .item{
+            float: none;
+            width: 100%;
+            padding-bottom: 20px;
+        }
+        .userinfo-item .item:last-child{
+            padding-bottom: 0;
+        }
+        .userinfo-item .item .img{
+            height: 110px;
+        }
+        .userinfo-item .item span{
+            padding-bottom: 10px;
+        }
+        .userinfo-item .item span em{
+            color: #999999;
+        }
+
+        .userinfo-record .sortitem, .userinfo-record .evaluationtype{
+            float: none;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .userinfo-record{
+            margin-top: 15px;
+            padding: 0px 15px;
+        }
+        .userinfo-record .evaluationrecord{
+            line-height: 1;
+            height: auto;
+        }
+        .userinfo-record .evaluationrecord .title{
+            display: inline-block;
+            float: none;
+            padding: 5px 15px;
+            margin-bottom: 10px;
+            margin-right: 0;
+        }
+        .userinfo-record .recordlist ol{
+            display: none;
+        }
+        .userinfo-record .recordlist ul{
+            display: block;
+            padding-bottom: 15px;
+            text-indent: 0;
+        }
+        .userinfo-record .recordlist li{
+            width: 100% !important;
+            float: none;
+            padding: 5px 0;
+        }
+        .userinfo-record .recordlist{
+            padding-top: 0;
+        }
+        .userinfo-record .recordlist li:nth-child(4),
+        .userinfo-record .recordlist li:nth-child(5){
+           color:#999999;
+        }
+
+        .salesrecord ol{
+            display: none;
+        }
+        .salesrecord ul{
+            display: block;
+            padding-bottom: 20px;
+        }
+        .salesrecord li{
+            float: none;
+            width: 100% !important;
+            padding: 0 0 10px;
+        }
+        .salesrecord li:last-child{
+            margin-top: 10px;
+        }
+        .salesrecord li .btn-color{
+            padding: 7px 30px;
+        }
+        .salesrecord li em{
+            display: inline;
+            color: #999999;
+            padding-right: 10px;
         }
     }
 </style>

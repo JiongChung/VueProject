@@ -22,7 +22,30 @@
                 </div>
                 <div class="assetlist">
                     <el-checkbox v-model="hidezero">隐藏0资产钱包</el-checkbox>
-                    <el-table
+                    <ol class="clearfix">
+                        <li>币种</li>
+                        <li>总额</li>
+                        <li>可用余额</li>
+                        <li>下单冻结</li>
+                        <li>锁仓</li>
+                        <li>资产估值</li>
+                        <li>操作</li>
+                    </ol>
+                    <div v-html="loadingHtml" v-show="isloading"></div>
+                    <ul class="clearfix" v-for="item in tableData">
+                        <li><span class="pc" v-show="!isPC">币种：</span>{{item.cointype}}</li>
+                        <li><span class="pc" v-show="!isPC">总额：</span>{{item.total}}</li>
+                        <li><span class="pc" v-show="!isPC">可用余额：</span>{{item.balance}}</li>
+                        <li><span class="pc" v-show="!isPC">下单冻结：</span>{{item.freeze}}</li>
+                        <li><span class="pc" v-show="!isPC">锁仓：</span>{{item.locked}}</li>
+                        <li><span class="pc" v-show="!isPC">资产估值：</span>{{item.valuation}}</li>
+                        <li>
+                            <el-button @click="takeCoinOut(item.id)" class="take" type="text" size="small">提币</el-button>
+                            <el-button @click="recharge(item.id)" type="text" size="small" class="btn-color recharge">充值</el-button>
+                            <el-button @click="lock(item.id)" type="text" size="small" class="lock">锁仓</el-button>
+                        </li>
+                    </ul>
+                    <!-- <el-table
                         :data="tableData"
                         v-loading="loading"
                         element-loading-background="rgba(0, 0, 0, 0.3)"
@@ -66,7 +89,7 @@
                                 <el-button @click="lock(scope.row.id)" type="text" size="small" class="lock">锁仓</el-button>
                             </template>
                         </el-table-column>
-                    </el-table>
+                    </el-table> -->
                 </div>
             </el-tab-pane>
         </el-tabs>
@@ -101,8 +124,15 @@
                         valuation: '963287812 CNY'
                     }
                 ],
-                loading: true
+                loading: true,
+                isPC: true,
+                loadingHtml: '',
+                isloading: true,
             }
+        },
+        mounted: function(){
+           this.isPC = this.commonService.getWindowWidth() < 769 ? false : true;
+           this.loadingHtml = this.commonService.isloading();
         },
         methods: {
             search() {
@@ -169,7 +199,42 @@
     }
 
     .assetlist{
-        padding-top: 30px;
+        margin-top: 30px;
+        position: relative;
+        min-height: 150px;
+
+        ol,ul{
+            display: flex;
+        }
+        ol{
+            color: #999999;
+            padding-top: 15px;
+        }
+        li{
+            float: left;
+            width: 15%;
+            padding: 10px 0;
+            line-height: 20px;
+        }
+        li:nth-child(1){
+            width: 8%;
+            text-indent: 15px;
+        }
+        li:nth-child(7){
+            flex: 1;
+        }
+        ul{
+            background: rgba(12, 31, 44, 0.4);
+            border-radius: 3px;
+            margin-bottom: 15px;
+        }
+        ul:hover{
+            background: rgba(255,255,255,0.1);
+        }
+
+        .el-button+.el-button{
+            margin-left: 0;
+        }
     }
     .take{
         border: solid 1px #017EFF;
@@ -190,5 +255,45 @@
 
     .assetdatalist{
         margin-top: 20px;
+    }
+
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        .allassetitem{
+            padding-top: 0;
+        }
+
+        .allassetitem .asset{
+            padding-left: 0;
+            float: none;
+        }
+        .allassetitem .asset .title{
+            position: static;
+            padding-bottom: 10px;
+        }
+        .allassetitem .serachitem{
+            float: none;
+            padding-top: 10px;
+        }
+        .assetlist ol{
+            display: none;
+        }
+        .assetlist ul{
+            display: block;
+            padding: 0 15px 5px;
+            border-radius: 5px;
+            margin-top: 15px;
+            margin-bottom: 0;
+
+            .pc{
+                color: #999999
+            }
+        }
+        .assetlist li,
+        .assetlist li:nth-child(1){
+            width: 100%;
+            float: none;
+            text-indent: 0;
+            line-height: 1;
+        }
     }
 </style>

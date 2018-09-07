@@ -26,9 +26,9 @@
                                         安全等级：
                                     </span>
                                     <span class="progress"><i :style="{ width: securityLevelRate + '%' }"></i></span>
-                                    <span v-if="userForAccount.securityLevel < 2 && userStatus">差</span>
-                                    <span v-if="1 < userForAccount.securityLevel < 5 && userStatus">中</span>
-                                    <span v-if="userForAccount.securityLevel > 4 && userStatus">高</span>
+                                    <span v-show="userForAccount.securityLevel < 2 && userStatus">差</span>
+                                    <span v-show="userForAccount.securityLevel > 1 && userForAccount.securityLevel < 5 && userStatus">中</span>
+                                    <span v-show="userForAccount.securityLevel > 4 && userStatus">高</span>
                                 </li>
                                 <li>
                                     <span class="title">

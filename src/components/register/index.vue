@@ -32,21 +32,22 @@
                                     (+86) China
                                 </div>
                                 <input class="validate" v-on:input="watchphoneNumber" v-model="phoneNumber" autocomplete="off" rule="phone" type="text" msg="请输入正确的手机号码" name="phoneNumber" placeholder="请输入您的手机号">
-                                <span class="err-tips" v-if="phoneNumberStatus">请输入正确的手机号码</span>
+                                <span class="err-tips" v-show="phoneNumberStatus">请输入正确的手机号码</span>
+                                <span class="err-tips" v-show="phoneNumberOccupiedStatus">该手机号码已经注册了，请更新其它手机号码</span>
                             </li>
                             <li class="inputbox">
-                                <input id="phonecode" v-on:input="watchPhonecode" v-model="phonecode" name="phonecode" rule="phonecode" type="text" class="validate" maxlength="20" msg="请输入有效手机验证码" placeholder="请输入手机验证码">
+                                <input id="phonecode" maxlength="6" v-on:input="watchPhonecode" v-model="phonecode" name="phonecode" rule="phonecode" type="text" class="validate" msg="请输入有效手机验证码" placeholder="请输入手机验证码">
                                 <span class="getcode" v-on:click="getPhoneCode">获取验证码</span>
-                                <span class="err-tips" v-if="phonecodeStatus">请输入有效手机验证码</span>
+                                <span class="err-tips" v-show="phonecodeStatus">请输入有效手机验证码</span>
                             </li>
                             <li class="inputbox">
                                 <input id="pwd" name="password" v-on:input="watchPassword" v-model="password" rule="password" type="password" class="validate" maxlength="20" msg="请输入8位至20位英文数字组合密码" placeholder="请输入您的密码">
-                                <span class="err-tips" v-if="passwordStatus">请输入8位至20位英文数字组合密码</span>
+                                <span class="err-tips" v-show="passwordStatus">请输入8位至20位英文数字组合密码</span>
                             </li>
                             <li class="inputbox">
                                 <input id="confirm_password" v-on:input="watchConfirmpassword" v-model="confirm_password" name="confirm_password" rule="password" type="password" class="validate" maxlength="20" msg="请输入8位至20位英文数字组合密码" placeholder="请再次输入密码">
-                                <span class="err-tips" v-if="confirmStatus">请输入8位至20位英文数字组合密码</span>
-                                <span class="err-tips" v-if="confirmTwiceStatus">两次密码输入不正确</span>
+                                <span class="err-tips" v-show="confirmStatus">请输入8位至20位英文数字组合密码</span>
+                                <span class="err-tips" v-show="confirmTwiceStatus">两次密码输入不正确</span>
                             </li>
                             <li class="submit">
                                 <input type="submit" value="注册">
@@ -84,7 +85,8 @@
                 confirmTwiceStatus: false,
                 phonecodeTimer: 60,
                 getphonecodestatus: true,
-                registerStatus: false
+                registerStatus: false,
+                phoneNumberOccupiedStatus:false
             }
         },
         mounted: function(){
@@ -148,6 +150,7 @@
 
             watchphoneNumber: function(e){
                 this.phoneNumberStatus = false;
+                this.phoneNumberOccupiedStatus = false;
             },
             watchPhonecode: function(e){
                 this.phonecodeStatus = false;
@@ -160,8 +163,13 @@
                 this.confirmTwiceStatus = false;
             },
             getPhoneCode: function(e){
-                if(this.getphonecodestatus){
-                    this.getPhoneCodeNow(e.target);
+                if(!this.commonService.zValidate.phone(this.phoneNumber)){
+                    this.phoneNumberStatus = true;
+                }else{
+                    if(this.getphonecodestatus){
+                        this.getPhoneCodeNow(e.target);
+                        this.SendSmsCode(this.apiService + 'Account/SendSmsCode', this.phoneNumber);
+                    }
                 }
             },
             getPhoneCodeNow: function(o){
@@ -178,6 +186,19 @@
                         that.getPhoneCodeNow(o)
                     }, 1000);
                 }
+            },
+            SendSmsCode(url, phone){
+                let that = this;
+                this.$http.post(url, {"phoneNumber": phone, "codeType": 1}).then(response => {
+                    console.log(response);
+                },err => {
+                    that.phoneNumberOccupiedStatus = true;
+                    console.log(err)
+                });
+            
+
+                console.log(phone)
+                
             }
         }
     })

@@ -225,10 +225,14 @@ input,textarea,button{
 .account-right .newphonenumber .el-input__inner{
     background:rgba(12, 31, 44, 0.4);
     border-color: rgba(0, 0, 0, 0);
+    height: 50px;
+    line-height: 50px;
 }
 .account-right .assetpasswordform .el-input__inner{
     background: rgba(12, 31, 44, 0.4);
-    border:none
+    border:none;
+    line-height: 50px;
+    height: 50px;
 }
 .account-right .el-checkbox__label{
     color: #ffffff;
@@ -596,6 +600,35 @@ input::-webkit-inner-spin-button {
 .takecoinlist-item{
     width: 1000px;
     margin: 0 auto;
+}
+
+.btn-submit{
+    padding: 10px 25px;
+}
+button.btn-submit.loading{
+    background: #f4f4f4 url(../images/loading_3.gif) no-repeat center center;
+    text-indent: -9999px;
+    padding: 10px 40px;
+}
+.el-notification__content{
+    margin: 0;
+    line-height: 24px;
+}
+span.cancel{
+    border: 1px solid #017EFF;
+    padding: 10px 15px;
+    text-align: center;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-left: 20px                
+}
+.account-right .setpassword-item .el-input__inner{
+    background: rgba(12, 31, 44, 0.4);
+    border:none;
+    height: 50px;
+    line-height: 50px;
 }
 /*
 html{ height:100%;font-size:62.5%;}
