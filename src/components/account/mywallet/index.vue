@@ -33,97 +33,37 @@
                     </ol>
                     <div v-html="loadingHtml" v-show="isloading"></div>
                     <ul class="clearfix" v-for="item in tableData">
-                        <li><span class="pc" v-show="!isPC">币种：</span>{{item.cointype}}</li>
+                        <li><span class="pc" v-show="!isPC">币种：</span>{{item.symbol}}</li>
                         <li><span class="pc" v-show="!isPC">总额：</span>{{item.total}}</li>
-                        <li><span class="pc" v-show="!isPC">可用余额：</span>{{item.balance}}</li>
-                        <li><span class="pc" v-show="!isPC">下单冻结：</span>{{item.freeze}}</li>
-                        <li><span class="pc" v-show="!isPC">锁仓：</span>{{item.locked}}</li>
-                        <li><span class="pc" v-show="!isPC">资产估值：</span>{{item.valuation}}</li>
+                        <li><span class="pc" v-show="!isPC">可用余额：</span>{{item.available}}</li>
+                        <li><span class="pc" v-show="!isPC">下单冻结：</span>{{item.frozen}}</li>
+                        <li><span class="pc" v-show="!isPC">锁仓：</span>{{item.lock}}</li>
+                        <li><span class="pc" v-show="!isPC">资产估值：</span>{{item.asset}}</li>
                         <li>
                             <el-button @click="takeCoinOut(item.id)" class="take" type="text" size="small">提币</el-button>
                             <el-button @click="recharge(item.id)" type="text" size="small" class="btn-color recharge">充值</el-button>
                             <el-button @click="lock(item.id)" type="text" size="small" class="lock">锁仓</el-button>
                         </li>
                     </ul>
-                    <!-- <el-table
-                        :data="tableData"
-                        v-loading="loading"
-                        element-loading-background="rgba(0, 0, 0, 0.3)"
-                        style="width: 100%" class="assetdatalist">
-                            <el-table-column
-                                prop="cointype"
-                                label="币种"
-                                width="80">
-                            </el-table-column>
-                            <el-table-column
-                                prop="total"
-                                label="总额"
-                                width="150">
-                            </el-table-column>
-                            <el-table-column
-                                prop="balance"
-                                label="可用余额"
-                                width="150">
-                            </el-table-column>
-                            <el-table-column
-                                prop="freeze"
-                                label="下单冻结"
-                                width="150">
-                            </el-table-column>
-                            <el-table-column
-                                prop="locked"
-                                label="锁仓"
-                                width="150">
-                            </el-table-column>
-                            <el-table-column
-                                prop="valuation"
-                                label="资产估值"
-                                width="150">
-                            </el-table-column>
-                            <el-table-column
-                                label="操作"
-                                width="200">
-                            <template slot-scope="scope">
-                                <el-button @click="takeCoinOut(scope.row.id)" class="take" type="text" size="small">提币</el-button>
-                                <el-button @click="recharge(scope.row.id)" type="text" size="small" class="btn-color recharge">充值</el-button>
-                                <el-button @click="lock(scope.row.id)" type="text" size="small" class="lock">锁仓</el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table> -->
+                    <!-- <v-page :setPageSize="MaxResultCount" :setTotalCount="TotalCount" v-on:linsenPageChildEvent="showPageStatusFromChild"></v-page> -->
                 </div>
             </el-tab-pane>
         </el-tabs>
     </div>
 </template>
 <script>
+    import Pagination from '../../page/index';
     export default {
         name: 'MyWallet',
+        components: {
+            'v-page': Pagination
+        },
         data(){
             return{
                 activeName: 'first',
                 assetSearch:'',
                 hidezero: false,
-                tableData: 
-                [
-                    {
-                        id: 1,
-                        cointype: 'BTC',
-                        total: '963.0258711',
-                        balance: '520.36958521',
-                        freeze: '0.128855544',
-                        locked: '0.3258744485',
-                        valuation: '963287812 CNY'
-                    },
-                    {
-                        id: 2,
-                        cointype: 'ETH',
-                        total: '963.0258711',
-                        balance: '520.36958521',
-                        freeze: '0.128855544',
-                        locked: '0.3258744485',
-                        valuation: '963287812 CNY'
-                    }
-                ],
+                tableData:[],
                 loading: true,
                 isPC: true,
                 loadingHtml: '',
@@ -133,8 +73,18 @@
         mounted: function(){
            this.isPC = this.commonService.getWindowWidth() < 769 ? false : true;
            this.loadingHtml = this.commonService.isloading();
+           this.GetUserWalletBalance(this.apiService + 'UserWallet/GetUserWalletBalance');
         },
         methods: {
+            GetUserWalletBalance(url){
+                this.$http.get(url).then(response => {
+                    this.tableData = response.body.result.items;
+                    this.isloading = false;
+                    // console.log(response.body.result.items);
+                },err => {
+                    console.log(err)
+                });
+            },
             search() {
                 console.log('submit!');
             },

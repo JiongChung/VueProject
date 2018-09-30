@@ -19,6 +19,24 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
+import VueI18n  from 'vue-i18n';
+Vue.use(VueI18n);
+
+const i18n = new VueI18n({
+    locale: 'zh',
+    messages: {
+      'zh': require('@/assets/languages/zh.json'),
+      'en': require('@/assets/languages/en.json'),
+      'tw': require('@/assets/languages/tw.json')
+    }
+});
+
+
+
+Vue.use(ElementUI, {
+    i18n: (key,value) => i18n.t(key,value)
+});
+
 import common from './store/index';
 Vue.prototype.commonService = common;
 
@@ -33,6 +51,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  i18n,
   components: { App },
   template: '<App/>'
 })

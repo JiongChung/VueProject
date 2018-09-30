@@ -1,7 +1,7 @@
 <template>
     <div class="basepage">
         <el-tabs v-model="activeName">
-            <el-tab-pane label="基本资料" name="first">
+            <el-tab-pane :label="$t('common.home')" name="first">
                 <div class="avataritem">
                     <h4>个人头像</h4>
                     <div class="pic">
@@ -174,7 +174,7 @@
                 let status = false;
                 if(!this.commonService.zValidate.phone(this.form.phoneNumber)){
                     status = true;
-                    this.$message.error('手机格式错误，请重新输入');
+                    this.$message.error(this.$t('message.errPhone'));
                 }
                 if(status){
                     return false;

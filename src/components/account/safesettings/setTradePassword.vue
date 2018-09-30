@@ -127,7 +127,7 @@ export default {
                     this.EditPasswordForm.confirmTradePassword = '';
                 }
                 
-                this.cancelEdit();
+                this.$emit('listenTradePassword','success');
             }, err => {
                 this.$message.error(err.body.error.message);
                 this.loadingStatus = false;
@@ -146,7 +146,7 @@ export default {
             this.isShowitem = true;
         },
         ForgetPassword(){
-            this.$emit('listenTradePassword','forget');
+             this.$emit('listenTradePassword','forget');
         }
     }
 }

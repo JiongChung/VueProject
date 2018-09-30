@@ -416,5 +416,26 @@ export default {
             padding-top: 0;
             padding-bottom: 20px;
         }
+
+        .setassetpassword .setphonestep{
+            width: 100%;
+        }
+
+        .setassetpassword .setphonestep span{
+            font-size: 12px;
+            padding: 5px 8px;
+        }
+        .setassetpassword .setphonestep span.new{
+            margin-left: 17%;
+        }
+        .setassetpassword .setphonetips{
+            padding-top: 0;
+        }
+        .setassetpassword .setphonetips span{
+            line-height: 1.5;
+        }
+        .setassetpassword .setnewphone{
+            width: 100%
+        }
     }
 </style>

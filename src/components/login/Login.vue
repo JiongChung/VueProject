@@ -50,7 +50,7 @@
                     <h4>两步验证</h4>
                     <div class="verification-item">
                         <span class="text">
-                            请输入您的手机验证码
+                            手机验证码已经发到您的手机了，请查看。
                         </span>
                         
                         <ul>

@@ -33,7 +33,7 @@
                             <span class="text">绑定后，登录、提现时需要谷歌二次验证</span>
                             <span class="options">
                                 <b class="btn-color" @click="setGoogleNow" v-if="!safeStatus.isGoogleAuthenticator">启用</b>
-                                <b class="btn-color" @click="setGoogleNow" v-else>启用</b>
+                                <b class="btn-color" @click="setGoogleNow" v-else>修改</b>
                             </span>
                         </li>
                     </ul>
@@ -60,11 +60,13 @@
                     v-on:listenSetPhone="showMsgFromPhone">
                 </app-setphone>
                 
-                <div class="setassetpassword" v-if="isSetGoogle">
-                    <div class="setgoogle">
-                        <h4>请先扫二维码或手动输入秘钥，将手机上生成的动态验证码填到下面的输入框</h4>
-                    </div>
-                </div>
+                <app-setgoogle
+                    ref="google"
+                    :setStatus="safeStatus.isGoogleAuthenticator" 
+                    :setGoogleStatus="isSetGoogle"
+                    v-on:listenSetGoogle="showMsgFromGoogle">
+                </app-setgoogle>
+                
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -74,12 +76,14 @@
     import SetEmail from './setEmial';
     import ForgetAndSetPassword from './forgetAndSetPassword';
     import SetPhone from './setPhone';
+    import SetGoogle from './setGoogle';
     export default {
         components: {
             'app-settradepassword' : SetTradePassword,
             'app-setemail' : SetEmail,
             'app-forgetandsetpassword' : ForgetAndSetPassword,
-            'app-setphone' : SetPhone
+            'app-setphone' : SetPhone,
+            'app-setgoogle' : SetGoogle
         },
         data(){
             return{
@@ -105,6 +109,15 @@
            this.GetUserSecurityForAccount(this.apiService + 'Account/GetUserSecurityForAccount');
         },
         methods: {
+            showMsgFromGoogle(data){
+                this.isSetGoogle = false;
+                this.showsetlist = true;
+                if(data == 'bind'){
+                    this.safeStatus.isGoogleAuthenticator = true;
+                }else{
+                    this.safeStatus.isGoogleAuthenticator = false;
+                }                
+            },
             showMsgFromPhone(data){
                 console.log(data);
                 this.isSetPhone = false;
@@ -127,14 +140,17 @@
                     this.showsetassetpassword = false;
                     this.isShowForgetPassWord = false;
                     this.showsetlist = true;
+                }else if(data == 'success'){
+                    this.showsetassetpassword = false;
+                    this.showsetlist = true;
+                    this.safeStatus.isTradePassword = true;
                 }
             },
-            cancelEdit(){
-                console.log('aa');
-            },
+
             GetUserSecurityForAccount(url){
                 this.$http.get(url).then(response => {
                     this.safeStatus = response.body.result;
+                    // this.safeStatus.isPhoneNumber = false;
                 });
             },
             setAssetPassword(){
@@ -142,28 +158,9 @@
                 this.showsetassetpassword = true;
             },
 
-            saveSetAssetPassword() {
-                console.log(0)
-            },
-
             setEmailNow(){
                 this.showsetlist = false;
                 this.isSetEmail = true;
-            },
-
-           
-
-            saveEmailCode(){
-                this.isSetEmailSuccess = true;
-                this.isSetEmail = false;
-                setTimeout(() => {
-                    this.showsetlist = true;
-                    this.showsetassetpassword = false;
-                    this.isSendEmailCode =  false;
-                    this.isSetEmailSuccess = false;
-                    this.isSetEmail = false;
-                    this.isSetPhone = false;
-                },3000);
             },
 
             setPhoneNow(){
@@ -174,7 +171,9 @@
            
 
             setGoogleNow(){
-
+                this.showsetlist = false;
+                this.isSetGoogle = true;
+                this.$refs.google.GetGoogleAuthenticator();
             }
         }
     }
@@ -339,6 +338,7 @@
                 padding-top: 20px;
             }
         }
+        
     }
     @media only screen and (min-width: 320px) and (max-width:768px){
         .safepage .setlist li span{

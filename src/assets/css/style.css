@@ -630,6 +630,11 @@ span.cancel{
     height: 50px;
     line-height: 50px;
 }
+.nodata{
+    text-align: center;
+    min-height: 150px;
+    line-height: 150px;
+}
 /*
 html{ height:100%;font-size:62.5%;}
 @media only screen and (max-width: 320px)

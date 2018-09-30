@@ -91,6 +91,7 @@ export default{
         var dayC = diffValue / this.day;
         var hourC = diffValue / this.hour;
         var minC = diffValue / this.minute;
+        console.log(window.localStorage.getItem('_localeLang'));
         if (monthC >= 1) {
             result = '大约' + parseInt(monthC) + "个月前上线";
         }
@@ -146,5 +147,26 @@ export default{
         }
 
         return status;
+    },
+    numberFormat: function(s, n) {  
+        /* * numberFormat(1000.22, 2); * */
+        n = n >= 0 && n <= 20 ? n : 2;
+        s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+        var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+        var t = "";  
+        for (i = 0; i < l.length; i++) {  
+            t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? (',') : "");  
+        }
+        var res = t.split("").reverse().join("");
+        console.log(r);
+        console.log(n);
+        if(r){
+            if(r == '00'){
+                res = res;
+            }else{
+                res += ('.') + r;
+            }
+        }
+        return res;  
     }
 }

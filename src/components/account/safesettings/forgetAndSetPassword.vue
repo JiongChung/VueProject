@@ -198,7 +198,12 @@ export default {
 
             let url = this.apiService + 'Account/CreateOrUpdateTradePassword';
             let data = {};
-            data.newTradePassword = this.savePassByPhone.currentTradePassword;
+            data.currentTradePassword = this.savePassByPhone.currentTradePassword;
+            data.type = 'Phone';
+            data.isReset = true;
+            data.phoneNumber = this.setPassByPhone.phone;
+            data.code = this.setPassByPhone.phonecode;
+
             this.$http.post(url, data).then(response => {
                 console.log(response);
                 this.$notify({
@@ -323,5 +328,15 @@ export default {
                 font-size: 16px;
             }
         }
+    }
+    @media only screen and (min-width: 320px) and (max-width:768px){
+        
+      .forgetpasswordpage{
+          padding-top: 0;
+      }
+      .forgetpasswordpage .setpassword-item{
+          width: 100%;
+      }
+        
     }
 </style>

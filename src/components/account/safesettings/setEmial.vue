@@ -274,6 +274,7 @@ export default {
         }
         .setassetpassword .assetpasswordform{
             width: 100%;
+            padding-top: 0;
         }
         
         .setassetpassword.setemail h4{
@@ -288,5 +289,7 @@ export default {
             padding-top: 0;
             padding-bottom: 20px;
         }
+
+        
     }
 </style>

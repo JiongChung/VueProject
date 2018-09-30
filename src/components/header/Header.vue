@@ -9,7 +9,7 @@
             </button>
             <div class="header-nav" v-if="isPC">
                 <ul>
-                    <li><router-link to="/">首页</router-link></li>
+                    <li><router-link to="/">{{$t("common.home")}}</router-link></li>
                     <li id="adstradenav"><router-link to="/adstrade">场外交易</router-link></li>
                     <li><router-link to="/help">帮助中心</router-link></li>
                     <li><router-link to="/download">下载APP</router-link></li>
@@ -48,12 +48,12 @@
                         <li>
                             <el-dropdown @command="languageCommand" class="language-link" v-if="isPC">
                                 <span class="el-dropdown-link">
-                                    简体中文<i class="el-icon-arrow-down el-icon--right"></i>
+                                    {{$t("common.lang")}}<i class="el-icon-arrow-down el-icon--right"></i>
                                 </span>
                                 <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item command="a">简体中文</el-dropdown-item>
-                                    <el-dropdown-item command="b">繁体中文</el-dropdown-item>
-                                    <el-dropdown-item command="c">English</el-dropdown-item>
+                                    <el-dropdown-item command="zh">简体中文</el-dropdown-item>
+                                    <el-dropdown-item command="tw">繁体中文</el-dropdown-item>
+                                    <el-dropdown-item command="en">English</el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
                             <div class="isphone-dropdown" v-else>
@@ -117,9 +117,9 @@
                                         简体中文<i class="el-icon-arrow-down el-icon--right"></i>
                                     </span>
                                     <el-dropdown-menu slot="dropdown">
-                                        <el-dropdown-item command="a">简体中文</el-dropdown-item>
-                                        <el-dropdown-item command="b">繁体中文</el-dropdown-item>
-                                        <el-dropdown-item command="c">English</el-dropdown-item>
+                                        <el-dropdown-item command="zh">简体中文</el-dropdown-item>
+                                        <el-dropdown-item command="tw">繁体中文</el-dropdown-item>
+                                        <el-dropdown-item command="en">English</el-dropdown-item>
                                     </el-dropdown-menu>
                                 </el-dropdown>
                                 <div class="isphone-dropdown" v-else>
@@ -161,12 +161,23 @@
             this.isLoginNow = this.commonService.islogin();
             this.isPC = this.commonService.getWindowWidth() < 769 ? false : true;
             this.showTopMenu = this.commonService.getWindowWidth() < 769 ? false : true;
+            if(window.localStorage.getItem('_localeLang') != null){
+                this.$i18n.locale = window.localStorage.getItem('_localeLang');
+            }else{
+                window.localStorage.setItem('_localeLang',this.$i18n.locale);
+            }
         },
 
          methods: {
             assetsCommand(command) {
                 if(command == 'a'){
                     this.$router.push('/account');
+                }
+                if(command == 'b'){
+                    this.$router.push('/mywallet');
+                }
+                if(command == 'c'){
+                    this.$router.push('/takecoin');
                 }
                 if(command == 'e'){
                     this.commonService.TokenCommonSet.delCookie('Abp.AuthToken');
@@ -179,7 +190,9 @@
                 }
             },
             languageCommand(command){
-                this.$message('click on item ' + command);
+                window.localStorage.setItem('_localeLang',command);
+                // let lang = this.$i18n.locale == command;
+                this.$i18n.locale = command;
             },
 
             logout(){

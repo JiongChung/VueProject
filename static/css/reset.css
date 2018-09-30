@@ -1,0 +1,140 @@
+@media only screen and (min-width: 1280px) and (max-width:1366px)
+{
+   body #header-item{
+       min-width: 1200px;
+   }
+   body #header-item .header{
+       max-width: 1200px;
+   }
+
+   body .wrap-item{
+       width: 1200px;
+   }
+}
+
+@media only screen and (min-width: 320px) and (max-width:768px)
+{
+    body #header-item{
+        min-width: 100%;
+    }
+    body #header-item .header{
+        max-width: 100%;
+    }
+    body .wrap{
+        min-width: 100%;
+    }
+
+    body .wrap-item{
+        width: 100%;
+    }
+
+    body .home .wrap-item{
+        padding: 0;
+    }
+
+    body .footer{
+        display: block;
+        padding: 0 15px;
+        background: transparent;
+    }
+    body .footer .wrap-item{
+        padding: 0;
+    }
+    body .footer .info{
+        float: none;
+        padding-bottom: 15px;
+    }
+    body .footer .link-item{
+        float: none;
+        flex: auto;
+    }
+    body .footer .link-item dl{
+        float: none;
+        padding-left: 0;
+        padding-bottom: 15px;
+    }
+    body .footer .link-item dd{
+        padding-top: 10px;
+    }
+
+    .header-nav .el-dropdown{
+        display: block;
+    }
+
+    .isphone-dropdown .el-dropdown-link{
+        font-size: 16px;
+    }
+    #header-item .header .header-nav li .isphone-dropdown li{
+        border:none;
+    }
+    #header-item .header .header-nav li .isphone-dropdown li a{
+        font-size: 14px;
+    }
+    #header-item .header .header-nav .login-item li:last-child{
+        border:none;
+    }
+
+    body .adsoption .el-select{
+        margin-bottom: 10px;
+    }
+
+    body .pushtype .el-select{
+        width: 40%;
+        margin-bottom: 10px;
+    }
+    body .pushtype .el-select:nth-child(3),
+    body .pushtype .el-select:nth-child(4){
+        margin-bottom: 0;
+    }
+
+    body .premium .el-slider__runway.show-input{
+        margin-right: 0;
+    }
+
+    body .publishpage .el-input-number--small{
+        margin-top: 50px;
+        line-height: 39px;
+        margin-right: 10%;
+    }
+
+    body .publishpage .el-checkbox+.el-checkbox,
+    body .basepage  .el-checkbox+.el-checkbox{
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    body .account{
+        min-width: 100%;
+    }
+    body .account-item{
+        max-width: 100%;
+        display: block;
+        padding: 0 15px;
+    }
+    body .account-left{
+        width: 100%;
+        float: none;
+        padding: 0;
+    }
+
+    body .account-right{
+        float: none;
+        flex: auto;
+        margin-top: 15px;
+        padding: 10px 15px;
+    }
+
+    body .account-right .el-tabs__nav-wrap:after{
+        left: 25px;
+        right: 25px;
+        width: auto;
+    }
+
+    body .userinfo-record .el-tabs__nav-wrap:after{
+        left: 25px;
+        right: 25px;
+        width: auto;
+    }
+
+}
