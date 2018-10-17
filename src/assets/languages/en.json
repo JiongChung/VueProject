@@ -1,9 +1,0 @@
-{
-    "common": {
-        "lang": "English",
-        "home": "Home"
-    },
-    "message": {
-        "errPhone": "The phone format is wrong, please re-enter"
-    }
-}
